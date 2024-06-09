@@ -7,10 +7,9 @@ module SnapshotUI
   class Web
     class Application
       def call(env)
-        @env = env
-        request = Rack::Request.new(env)
+        @request = Rack::Request.new(env)
 
-        case request.path_info
+        case @request.path_info
         when ""
           render("snapshots/index", status: 200)
         when "/sample-test-case-one"
@@ -37,7 +36,7 @@ module SnapshotUI
       end
 
       def root_path
-        @env["SCRIPT_NAME"]
+        @request.env["SCRIPT_NAME"]
       end
 
       def stylesheet_path(stylesheet)
