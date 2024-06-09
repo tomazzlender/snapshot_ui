@@ -15,6 +15,6 @@ class SnapshotUI::WebTest < Minitest::Spec
   it "renders a list of snapshots" do
     get "/ui/snapshots"
     _(last_response.body).must_match("Snapshots")
-    _(last_response.body).must_match("A list of snapshots...")
+    _(last_response.body).must_match("Instructions...")
   end
 end
