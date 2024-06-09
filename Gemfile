@@ -6,5 +6,7 @@ source "https://rubygems.org"
 gemspec
 
 gem "rake"
+gem "rack-test"
 gem "minitest"
+gem "puma"
 gem "standard"
