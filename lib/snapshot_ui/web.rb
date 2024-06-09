@@ -1,27 +1,23 @@
 # frozen_string_literal: true
 
 require "erb"
+require "rack"
+require "rack/static"
+require_relative "web/application"
 
 module SnapshotUI
   class Web
-    def call(_env)
-      render "snapshots/index", status: 200
-    end
+    def call(env)
+      app =
+        Rack::Builder.app do
+          use Rack::Static,
+            root: "#{File.dirname(__FILE__)}/web/assets",
+            urls: %w[/stylesheets /javascripts]
 
-    private
+          run Application.new
+        end
 
-    def render(template, status:)
-      @content = render_template(template)
-      body = render_template("layout")
-      headers = {"content-type" => "text/html; charset=utf-8"}
-
-      [status, headers, [body]]
-    end
-
-    def render_template(template)
-      template = File.read("#{File.dirname(__FILE__)}/web/views/#{template}.html.erb")
-      erb = ERB.new(template)
-      erb.result(binding)
+      app.call(env)
     end
   end
 end
