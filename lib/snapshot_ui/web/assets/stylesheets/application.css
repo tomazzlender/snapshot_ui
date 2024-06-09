@@ -46,3 +46,29 @@ body#snapshots_index h1, h2, h3, h4, h5, h6 {
 
 body#snapshots_index a { color: #000; text-decoration: none; }
 body#snapshots_index a:hover { text-decoration: underline; }
+
+body#snapshots_show {
+    overflow: hidden;
+}
+
+body#snapshots_show iframe#raw {
+    border: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body#not_found {
+    padding: 100px;
+}
+
+body#not_found h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: normal;
+    color: #666666;
+}
+
+body#not_found p {
+    margin: 18px 0 0;
+    color: #666666;
+}

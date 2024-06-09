@@ -8,7 +8,16 @@ module SnapshotUI
     class Application
       def call(env)
         @env = env
-        render("snapshots/index", status: 200)
+        request = Rack::Request.new(env)
+
+        case request.path_info
+        when ""
+          render("snapshots/index", status: 200)
+        when "/sample-test-case-one"
+          render("snapshots/show", status: 200)
+        else
+          render("snapshots/not_found", status: 200)
+        end
       end
 
       private
@@ -37,6 +46,10 @@ module SnapshotUI
 
       def javascript_path(stylesheet)
         [root_path, "javascripts", stylesheet].join("/")
+      end
+
+      def snapshot_path(slug)
+        [root_path, slug].join("/")
       end
     end
   end
