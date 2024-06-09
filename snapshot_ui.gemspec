@@ -4,7 +4,7 @@ require_relative "lib/snapshot_ui/version"
 
 Gem::Specification.new do |spec|
   spec.name = "snapshot_ui"
-  spec.version = SnapshotUi::VERSION
+  spec.version = SnapshotUI::VERSION
   spec.authors = ["Tomaz Zlender"]
   spec.email = ["tomaz@zlender.se"]
 

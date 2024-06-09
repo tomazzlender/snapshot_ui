@@ -2,9 +2,9 @@
 
 require "test_helper"
 
-class TestSnapshotUi < Minitest::Test
+class TestSnapshotUI < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::SnapshotUi::VERSION
+    refute_nil ::SnapshotUI::VERSION
   end
 
   def test_it_does_something_useful

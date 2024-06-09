@@ -2,7 +2,7 @@
 
 require_relative "snapshot_ui/version"
 
-module SnapshotUi
+module SnapshotUI
   class Error < StandardError; end
   # Your code goes here...
 end
