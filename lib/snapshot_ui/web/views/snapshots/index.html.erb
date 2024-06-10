@@ -6,7 +6,12 @@
   <h2>Test group 1</h2>
 
   <ul>
-    <li><a href="<%= snapshot_path("sample-test-case-one") %>">sample test description</a></li>
-    <li><a href="<%= snapshot_path("sample-test-case-one") %>">another test description</a></li>
+    <% list_snapshots.each do |snapshot_slug| %>
+      <li>
+        <a href="<%= snapshot_path(snapshot_slug) %>">
+          <%= snapshot_slug %>
+        </a>
+      </li>
+    <% end %>
   </ul>
 </body>

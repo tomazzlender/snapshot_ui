@@ -2,6 +2,7 @@
 
 require "erb"
 require "rack/static"
+require_relative "../snapshot"
 
 module SnapshotUI
   class Web
@@ -49,6 +50,10 @@ module SnapshotUI
 
       def snapshot_path(slug)
         [root_path, slug].join("/")
+      end
+
+      def list_snapshots
+        SnapshotUI::Snapshot.all
       end
     end
   end
