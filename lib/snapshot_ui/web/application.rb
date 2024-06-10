@@ -11,6 +11,7 @@ module SnapshotUI
         @request = Rack::Request.new(env)
 
         if parse_root_path(@request.path_info)
+          @snapshots = SnapshotUI::Snapshot.all
           render("snapshots/index", status: 200)
         elsif (slug = parse_raw_snapshot_path(@request.path_info))
           response_body = SnapshotUI::Snapshot.read_response_body(slug)
@@ -67,10 +68,6 @@ module SnapshotUI
 
       def raw_snapshot_path(slug)
         [root_path, "response", "raw", slug].join("/")
-      end
-
-      def list_snapshots
-        SnapshotUI::Snapshot.all
       end
 
       def parse_snapshot_path(path)
