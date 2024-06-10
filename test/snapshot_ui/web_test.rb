@@ -18,9 +18,14 @@ class SnapshotUI::WebTest < Minitest::Spec
     _(last_response.body).must_match("Instructions...")
   end
 
-  it "renders a single sample snapshot" do
-    get "/ui/snapshots/sample-test-case-one"
-    _(last_response.body).must_match("A raw render of a snapshot response...")
+  it "renders a single snapshot" do
+    get "/ui/snapshots/response/test_0001_renders%20a%20root%20page"
+    _(last_response.body).must_match('<iframe id="raw" src="/ui/snapshots/response/raw/test_0001_renders%20a%20root%20page">')
+  end
+
+  it "renders a raw response body of a snapshot" do
+    get "/ui/snapshots/response/raw/test_0001_renders%20a%20root%20page"
+    _(last_response.body).must_match("Dummy App")
   end
 
   it "when a snapshot for a given slug doesn't exist renders not found" do

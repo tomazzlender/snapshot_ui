@@ -10,10 +10,13 @@ module SnapshotUI
       def call(env)
         @request = Rack::Request.new(env)
 
-        case @request.path_info
-        when ""
+        if parse_root_path(@request.path_info)
           render("snapshots/index", status: 200)
-        when "/sample-test-case-one"
+        elsif (slug = parse_raw_snapshot_path(@request.path_info))
+          response_body = SnapshotUI::Snapshot.read_response_body(slug)
+          render_raw_response_body(response_body)
+        elsif (slug = parse_snapshot_path(@request.path_info))
+          @slug = slug
           render("snapshots/show", status: 200)
         else
           render("snapshots/not_found", status: 200)
@@ -21,6 +24,10 @@ module SnapshotUI
       end
 
       private
+
+      def render_raw_response_body(response_body)
+        [200, {"content-type" => "text/html; charset=utf-8"}, [response_body]]
+      end
 
       def render(template, status:)
         @content = render_template(template)
@@ -49,11 +56,29 @@ module SnapshotUI
       end
 
       def snapshot_path(slug)
-        [root_path, slug].join("/")
+        [root_path, "response", slug].join("/")
+      end
+
+      def raw_snapshot_path(slug)
+        [root_path, "response", "raw", slug].join("/")
       end
 
       def list_snapshots
         SnapshotUI::Snapshot.all
+      end
+
+      def parse_snapshot_path(path)
+        match = path.match(/\/response\/([^\/]+)/)
+        _slug = match[1] if match
+      end
+
+      def parse_raw_snapshot_path(path)
+        match = path.match(/\/response\/raw\/([^\/]+)/)
+        _slug = match[1] if match
+      end
+
+      def parse_root_path(path)
+        path == ""
       end
     end
   end
