@@ -11,14 +11,6 @@ module SnapshotUI
         render("snapshots/index", status: 200)
       end
 
-      def stylesheet_path(stylesheet)
-        [root_path, "stylesheets", stylesheet].join("/")
-      end
-
-      def javascript_path(stylesheet)
-        [root_path, "javascripts", stylesheet].join("/")
-      end
-
       private
 
       def render(template, status:)
@@ -37,6 +29,14 @@ module SnapshotUI
 
       def root_path
         @env["SCRIPT_NAME"]
+      end
+
+      def stylesheet_path(stylesheet)
+        [root_path, "stylesheets", stylesheet].join("/")
+      end
+
+      def javascript_path(stylesheet)
+        [root_path, "javascripts", stylesheet].join("/")
       end
     end
   end
