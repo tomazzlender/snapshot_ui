@@ -30,17 +30,23 @@ module SnapshotUI
       end
 
       def render(template, status:)
-        @content = render_template(template)
-        body = render_template("layout")
-        headers = {"content-type" => "text/html; charset=utf-8"}
+        rendered_view = ERB.new(read_template(template)).result(binding)
+        response_body = ERB.new(read_template("layout")).result(get_binding { rendered_view })
+        response_headers = {"content-type" => "text/html; charset=utf-8"}
 
-        [status, headers, [body]]
+        [status, response_headers, [response_body]]
       end
 
-      def render_template(template)
-        template = File.read("#{File.dirname(__FILE__)}/views/#{template}.html.erb")
-        erb = ERB.new(template)
-        erb.result(binding)
+      def get_binding
+        binding
+      end
+
+      def read_template(template)
+        File.read(template_path(template))
+      end
+
+      def template_path(template)
+        "#{File.dirname(__FILE__)}/views/#{template}.html.erb"
       end
 
       def root_path
