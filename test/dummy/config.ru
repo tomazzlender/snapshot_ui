@@ -11,7 +11,7 @@ end
 dummy_app =
   Rack::Builder.app do
     map "/" do
-      run lambda { |_env| [200, {"content-type" => "text/html"}, ["Dummy App"]] }
+      run lambda { |_env| [200, {"content-type" => "text/html"}, ["<html><body>Dummy App</body></html>"]] }
     end
 
     map "/ui/snapshots" do

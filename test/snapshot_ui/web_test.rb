@@ -25,7 +25,7 @@ class SnapshotUI::WebTest < Minitest::Spec
 
   it "renders a raw response body of a snapshot" do
     get "/ui/snapshots/response/raw/test_0001_renders%20a%20root%20page"
-    _(last_response.body).must_match("Dummy App")
+    _(last_response.body).must_match("<html><body>Dummy App</body></html>")
   end
 
   it "when a snapshot for a given slug doesn't exist renders not found" do
