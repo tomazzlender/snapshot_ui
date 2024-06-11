@@ -1,17 +1,50 @@
 <body id="snapshots_index">
   <h1>Snapshots</h1>
 
-  <p>Instructions...</p>
+  <% if @grouped_by_test_class.empty? %>
+    <p>
+      In your integration tests, after an instance of <code>Rack::MockResponse</code> becomes available,
+      add <code>#take_screenshot</code>. Run the tests, and the snapshot will appear here.
+    </p>
 
-  <h2>Test group 1</h2>
+    <p>Look below at an example integration test.</p>
+<pre>
+require "minitest/autorun"
+require "rack/test"
+require "application"
+<mark>require "snapshot_ui/test/rack_test_helpers"</mark>
+
+class ApplicationTest < Minitest::Spec
+  include Rack::Test::Methods
+  <mark>include SnapshotUI::Test::RackTestHelpers</mark>
+
+  def app
+    @app ||= Application.new
+  end
+
+  it "renders the root page" do
+    get "/"
+
+    <mark>take_snapshot last_response</mark>
+
+    _(last_response.body).must_match("To see a world in a grain of sand...")
+  end
+end
+</pre>
+  <% end %>
+
+  <% @grouped_by_test_class.each do |test_group, snapshots| %>
+  <h2><%= test_group %></h2>
 
   <ul>
-    <% @snapshots.each do |snapshot_slug| %>
+    <% snapshots.each do |snapshot| %>
       <li>
-        <a href="<%= snapshot_path(snapshot_slug) %>">
-          <%= snapshot_slug %>
+        <a href="<%= snapshot_path(snapshot.slug) %>">
+          <%= snapshot.context.name %>
+          <%= if snapshot.context.take_snapshot_index > 0 then "(##{(snapshot.context.take_snapshot_index + 1)} in the same test)" end %>
         </a>
       </li>
     <% end %>
   </ul>
+<% end %>
 </body>

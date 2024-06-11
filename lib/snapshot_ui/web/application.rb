@@ -11,13 +11,13 @@ module SnapshotUI
         @request = Rack::Request.new(env)
 
         if parse_root_path(@request.path_info)
-          @snapshots = SnapshotUI::Snapshot.all
+          @grouped_by_test_class = SnapshotUI::Snapshot.grouped_by_test_case
           render("snapshots/index", status: 200)
         elsif (slug = parse_raw_snapshot_path(@request.path_info))
-          response_body = SnapshotUI::Snapshot.read_response_body(slug)
-          render_raw_response_body(response_body)
+          @snapshot = Snapshot.find(slug)
+          render_raw_response_body(@snapshot.body)
         elsif (slug = parse_snapshot_path(@request.path_info))
-          @slug = slug
+          @snapshot = Snapshot.find(slug)
           render("snapshots/show", status: 200)
         else
           render("snapshots/not_found", status: 200)
@@ -71,13 +71,19 @@ module SnapshotUI
       end
 
       def parse_snapshot_path(path)
-        match = path.match(/\/response\/([^\/]+)/)
-        _slug = match[1] if match
+        pattern = %r{^/response/(?<slug>.+)$}
+
+        if (match = pattern.match(path))
+          match[:slug]
+        end
       end
 
       def parse_raw_snapshot_path(path)
-        match = path.match(/\/response\/raw\/([^\/]+)/)
-        _slug = match[1] if match
+        pattern = %r{^/response/raw/(?<slug>.+)$}
+
+        if (match = pattern.match(path))
+          match[:slug]
+        end
       end
 
       def parse_root_path(path)

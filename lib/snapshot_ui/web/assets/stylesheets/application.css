@@ -47,6 +47,33 @@ body#snapshots_index h1, h2, h3, h4, h5, h6 {
 body#snapshots_index a { color: #000; text-decoration: none; }
 body#snapshots_index a:hover { text-decoration: underline; }
 
+body#snapshots_index code {
+    background: rgba(175, 184, 193, 0.2);
+    font-size: 85%;
+    padding: .2em .4em;
+    border-radius: 6px;
+    font-family: Menlo, Courier, monospace;
+}
+
+body#snapshots_index pre {
+    background: rgb(246, 248, 250);;
+    font-size: 75%;
+    padding: 16px;
+    display: inline-block;
+    border-radius: 6px;
+    line-height: 1.5em;
+    font-family: Menlo, Courier, monospace;
+}
+
+body#snapshots_index pre mark {
+    background: lightgoldenrodyellow;
+    border: 1px solid #f1f1c3;
+    padding: 2px 3px;
+    position: relative;
+    left: -4px;
+    border-radius: 6px;
+}
+
 body#snapshots_show {
     overflow: hidden;
 }

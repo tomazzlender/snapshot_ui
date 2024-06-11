@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class TestSnapshotUI < Minitest::Spec
+class TestSnapshotUiTest < Minitest::Spec
   it "has a version number" do
     refute_nil ::SnapshotUI::VERSION
   end

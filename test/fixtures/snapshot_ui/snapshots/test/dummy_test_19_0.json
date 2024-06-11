@@ -1,0 +1,17 @@
+{
+  "type_data": {
+    "snapshotee_class": "Rack::MockResponse",
+    "body": "<html><body>Dummy App</body></html>"
+  },
+  "context": {
+    "test_framework": "minitest_spec",
+    "test_case_name": "DummyTest",
+    "method_name": "test_0001_renders a root page",
+    "source_location": [
+      "/Users/zlender/Code/snapshot_ui/test/dummy/test/dummy_test.rb",
+      19
+    ],
+    "take_snapshot_index": 0
+  },
+  "slug": "test/dummy_test_19_0"
+}
