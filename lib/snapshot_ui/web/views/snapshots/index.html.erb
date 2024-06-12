@@ -12,11 +12,11 @@
 require "minitest/autorun"
 require "rack/test"
 require "application"
-<mark>require "snapshot_ui/test/rack_test_helpers"</mark>
+<mark>require "snapshot_ui/test/minitest_helpers"</mark>
 
 class ApplicationTest < Minitest::Spec
   include Rack::Test::Methods
-  <mark>include SnapshotUI::Test::RackTestHelpers</mark>
+  <mark>include SnapshotUI::Test::MinitestHelpers</mark>
 
   def app
     @app ||= Application.new

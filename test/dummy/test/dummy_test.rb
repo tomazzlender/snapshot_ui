@@ -3,11 +3,11 @@
 require "minitest/autorun"
 require "rack/test"
 require "rack/builder"
-require_relative "../../../lib/snapshot_ui/test/rack_test_helpers"
+require_relative "../../../lib/snapshot_ui/test/minitest_helpers"
 
 class DummyTest < Minitest::Spec
   include Rack::Test::Methods
-  include SnapshotUI::Test::RackTestHelpers
+  include SnapshotUI::Test::MinitestHelpers
 
   def app
     @app ||= Rack::Builder.parse_file("test/dummy/config.ru")

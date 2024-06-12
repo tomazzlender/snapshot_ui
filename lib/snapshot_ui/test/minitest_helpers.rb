@@ -4,7 +4,7 @@ require_relative "../snapshot"
 
 module SnapshotUI
   module Test
-    module RackTestHelpers
+    module MinitestHelpers
       def take_snapshot(snapshotee)
         return unless %w[1 true].include?(ENV["TAKE_SNAPSHOTS"])
 
@@ -20,7 +20,7 @@ module SnapshotUI
         SnapshotUI::Snapshot.persist(
           snapshotee: snapshotee,
           context: {
-            test_framework: "minitest_spec",
+            test_framework: "minitest",
             method_name: name,
             source_location: build_source_location(caller_locations(1..1).first),
             test_case_name: self.class.to_s,
