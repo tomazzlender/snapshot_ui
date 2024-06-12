@@ -3,7 +3,7 @@
 
   <% if @grouped_by_test_class.empty? %>
     <p>
-      In your integration tests, after an instance of <code>Rack::MockResponse</code> becomes available,
+      In your integration tests, once a request has been made,
       add <code>#take_screenshot</code>. Run the tests, and the snapshot will appear here.
     </p>
 

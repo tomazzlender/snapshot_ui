@@ -8,8 +8,11 @@ module SnapshotUI
       def take_snapshot(snapshotee)
         return unless %w[1 true].include?(ENV["TAKE_SNAPSHOTS"])
 
-        unless snapshotee.is_a?(Rack::MockResponse)
-          raise ArgumentError.new("#take_snapshot only accepts an argument of type Rack::MockResponse. You provided an argument of type #{snapshotee.class}.")
+        unless snapshotee.respond_to?(:body)
+          message =
+            "#take_snapshot only accepts an argument that responds to a method `#body`. " \
+            "You provided an argument of type `#{snapshotee.class}` that does not respond to `#body`."
+          raise ArgumentError.new(message)
         end
 
         increment_take_snapshot_counter_scoped_by_test
