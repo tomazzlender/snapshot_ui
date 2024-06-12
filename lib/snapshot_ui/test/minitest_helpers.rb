@@ -7,7 +7,7 @@ module SnapshotUI
   module Test
     module MinitestHelpers
       def take_snapshot(snapshotee)
-        return unless %w[1 true].include?(ENV["TAKE_SNAPSHOTS"])
+        return unless SnapshotUI.snapshot_taking_enabled?
 
         unless snapshotee.respond_to?(:body)
           message =

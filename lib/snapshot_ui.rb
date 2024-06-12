@@ -17,6 +17,10 @@ module SnapshotUI
     @configuration ||= Configuration.new(**DEFAULT_CONFIGURATION)
   end
 
+  def self.snapshot_taking_enabled?
+    %w[1 true].include?(ENV["TAKE_SNAPSHOTS"])
+  end
+
   def self.publish_snapshots_in_progress
     Snapshot.publish_snapshots_in_progress
   end
