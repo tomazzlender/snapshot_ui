@@ -7,6 +7,10 @@ require_relative "web/application"
 
 module SnapshotUI
   class Web
+    def self.call(env)
+      new.call(env)
+    end
+
     def call(env)
       app =
         Rack::Builder.app do

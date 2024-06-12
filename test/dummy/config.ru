@@ -20,7 +20,7 @@ dummy_app =
     end
 
     map "/ui/snapshots" do
-      run SnapshotUI::Web.new
+      run SnapshotUI::Web
     end
   end
 
