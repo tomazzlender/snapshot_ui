@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "../../snapshot_ui"
 require_relative "../snapshot"
 
 module SnapshotUI

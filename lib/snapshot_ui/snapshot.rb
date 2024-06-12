@@ -34,6 +34,10 @@ module SnapshotUI
       Storage.clear(:in_progress)
     end
 
+    def self.clear_snapshots
+      Storage.clear
+    end
+
     private_class_method def self.all
       snapshots = Storage.list.map { |slug| find(slug) }
 

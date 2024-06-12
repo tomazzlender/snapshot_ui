@@ -24,4 +24,8 @@ module SnapshotUI
   def self.clear_snapshots_in_progress
     Snapshot.clear_snapshots_in_progress
   end
+
+  def self.clear_snapshots
+    Snapshot.clear_snapshots
+  end
 end
