@@ -87,7 +87,7 @@ module SnapshotUI
       end
 
       def parse_root_path(path)
-        path == ""
+        path == "" || path == "/"
       end
     end
   end
