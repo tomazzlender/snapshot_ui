@@ -4,8 +4,27 @@
   <title>Snapshot UI</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="turbo-refresh-method" content="morph">
+  <meta name="turbo-refresh-scroll" content="preserve">
   <link rel="stylesheet" href="<%= stylesheet_path("application.css") %>">
-  <script src="<%= javascript_path("application.js") %>"></script>
+  <meta name="action-cable-url" content="ws://127.0.0.1:7070/cable" />
+  <script type="importmap" data-turbo-track="reload">
+    {
+      "imports": {
+        "application": "<%= javascript_path("application.js") %>",
+        "@hotwired/stimulus": "https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.2/+esm",
+        "@hotwired/turbo": "https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.4/+esm",
+        "@rails/actioncable": "https://cdn.jsdelivr.net/npm/@rails/actioncable@7.1.3-4/+esm",
+        "controllers/refresh_controller": "<%= javascript_path("controllers/refresh_controller.js") %>",
+        "channels/consumer": "<%= javascript_path("channels/consumer.js") %>",
+        "channels": "<%= javascript_path("channels/index.js") %>",
+        "channels/refresh_channel": "<%= javascript_path("channels/refresh_channel.js") %>"
+      }
+    }
+  </script>
+  <script type="module">
+    import "application"
+  </script>
 </head>
 <%= yield %>
 </html>

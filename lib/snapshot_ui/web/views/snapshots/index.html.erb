@@ -1,10 +1,10 @@
-<body id="snapshots_index">
+<body id="snapshots_index" <%= refresh_controller %>>
   <h1>Snapshots</h1>
 
   <% if @grouped_by_test_class.empty? %>
     <p>
       In your integration tests, once a request has been made,
-      add <code>#take_screenshot</code>. Run the tests, and the snapshot will appear here.
+      add <code>#take_screenshot</code>. Run the tests with <code>TAKE_SNAPSHOTS=1</code>, and the snapshot will appear here.
     </p>
 
     <p>Look below at an example integration test.</p>
@@ -31,6 +31,16 @@ class ApplicationTest < Minitest::Spec
   end
 end
 </pre>
+
+  <p>
+    To activate live updates for this page, execute the following command in your terminal.<br>
+  </p>
+  <pre>
+bundle exec snapshot_ui watch SNAPSHOT_DIRECTORY</pre>
+  <p>
+    where <code>SNAPSHOT_DIRECTORY</code> is a path to a directory that contains
+    snapshot UI data, e.g. <code>tmp/snapshot_ui</code>.
+  </p>
   <% end %>
 
   <% @grouped_by_test_class.each do |test_group, snapshots| %>

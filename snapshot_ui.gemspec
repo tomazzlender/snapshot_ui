@@ -29,12 +29,15 @@ Gem::Specification.new do |spec|
         f.start_with?(*%w[bin/ test/ spec/ features/ .git .github appveyor Gemfile])
     end
   end
-  spec.bindir = "exe"
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.executables = ["snapshot_ui"]
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "rack"
+  spec.add_dependency "listen"
+  spec.add_dependency "async-websocket"
+  spec.add_dependency "falcon"
+  spec.add_dependency "thor"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

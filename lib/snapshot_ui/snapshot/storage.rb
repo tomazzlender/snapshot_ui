@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../../snapshot_ui"
-
 module SnapshotUI
   class Snapshot
     class Storage

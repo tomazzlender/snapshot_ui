@@ -3,6 +3,7 @@
 require "erb"
 require "rack/static"
 require_relative "../snapshot"
+require "listen"
 
 module SnapshotUI
   class Web
@@ -12,7 +13,11 @@ module SnapshotUI
 
         if parse_root_path(@request.path_info)
           @grouped_by_test_class = SnapshotUI::Snapshot.grouped_by_test_case
-          render("snapshots/index", status: 200)
+          if @request.get_header("HTTP_ACCEPT") != "text/event-stream"
+            render("snapshots/index", status: 200)
+          else
+            [200, {"content-type" => "text/event-stream", "cache-control" => "no-cache", "connection" => "keep-alive"}, file_event_stream(SnapshotUI.configuration.storage_directory)]
+          end
         elsif (slug = parse_raw_snapshot_path(@request.path_info))
           @snapshot = Snapshot.find(slug)
           render_raw_response_body(@snapshot.body)
@@ -22,9 +27,30 @@ module SnapshotUI
         else
           render("snapshots/not_found", status: 200)
         end
+      rescue SnapshotUI::Snapshot::NotFound
+        render("snapshots/not_found", status: 200)
       end
 
       private
+
+      def file_event_stream(directory)
+        message = '<turbo-stream action="refresh"></turbo-stream>'
+
+        Enumerator.new do |stream|
+          listener = Listen.to(directory) do |_modified, _added, _removed|
+            stream << "data: #{message}\n\n"
+          end
+
+          listener.start
+          sleep
+        rescue Puma::ConnectionError
+          listener.stop
+          puts "Puma::ConnectionError"
+        rescue Errno::EPIPE
+          listener.stop
+          puts "Errno::EPIPE"
+        end
+      end
 
       def render_raw_response_body(response_body)
         [200, {"content-type" => "text/html; charset=utf-8"}, [response_body]]
@@ -88,6 +114,10 @@ module SnapshotUI
 
       def parse_root_path(path)
         path == "" || path == "/"
+      end
+
+      def refresh_controller
+        'data-controller="refresh" data-action="refresh-connected@window->refresh#connected refresh-disconnected@window->refresh#disconnected turbo:before-render@window->refresh#display_status"'
       end
     end
   end

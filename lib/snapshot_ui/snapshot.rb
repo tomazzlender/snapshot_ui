@@ -8,6 +8,8 @@ module SnapshotUI
   class Snapshot
     attr_reader :slug, :context, :body
 
+    class NotFound < StandardError; end
+
     def self.persist(snapshotee:, context:)
       new.extract(snapshotee: snapshotee, context: context).persist
     end
@@ -16,7 +18,7 @@ module SnapshotUI
       json = JSON.parse(Storage.read(slug), symbolize_names: true)
       new.from_json(json)
     rescue Errno::ENOENT
-      raise StandardError.new("Snapshot with a slug `#{slug}` can't be found.")
+      raise NotFound.new("Snapshot with a slug `#{slug}` can't be found.")
     end
 
     def self.grouped_by_test_case
