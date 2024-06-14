@@ -12,7 +12,7 @@ task default: %i[test standard]
 
 namespace :snapshot_ui do
   desc "Clear snapshots"
-  task :publish_snapshots_in_progress do
+  task :clear_snapshots do
     SnapshotUI.clear_snapshots
   end
 end
