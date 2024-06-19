@@ -9,7 +9,6 @@ Gem::Specification.new do |spec|
   spec.email = ["tomaz@zlender.se"]
 
   spec.summary = "Take snapshots of UI during testing for inspection in a browser."
-  spec.description = "Take snapshots of UI during testing for inspection in a browser."
   spec.homepage = "https://github.com/tomazzlender/snapshot_ui"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
