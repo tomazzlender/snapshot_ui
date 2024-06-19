@@ -59,6 +59,7 @@ body#snapshots_index pre {
     background: rgb(246, 248, 250);;
     font-size: 75%;
     padding: 16px;
+    margin: 15px 0 0;
     display: inline-block;
     border-radius: 6px;
     line-height: 1.5em;
