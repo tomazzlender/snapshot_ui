@@ -25,11 +25,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency "rack"
-  spec.add_dependency "listen"
-  spec.add_dependency "async-websocket"
-  spec.add_dependency "falcon"
-  spec.add_dependency "thor"
+  spec.add_dependency "rack", "~> 3.0"
+  spec.add_dependency "listen", "~> 3.9"
+  spec.add_dependency "async-websocket", "~> 0.26"
+  spec.add_dependency "falcon", "~> 0.47"
+  spec.add_dependency "thor", "~> 1.3"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
