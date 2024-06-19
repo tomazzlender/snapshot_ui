@@ -99,3 +99,9 @@ body#not_found p {
     margin: 18px 0 0;
     color: #666666;
 }
+
+/* Hotwired Turbo related */
+.turbo-progress-bar {
+    height: 2px;
+    background-color: lightskyblue;
+}
