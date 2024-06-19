@@ -1,16 +1,8 @@
-# SnapshotUI
+# Snapshot UI
 
-## Things to do next
+Take snapshots of responses in integration tests, and display them in a browser.
 
-- Live reloads after a test run and new snapshots become published
-- Accept not only "response" objects but also just plain strings for testing UI helpers (think buttons, etc.)
-- Make it easier to navigate between a list of snapshots and the code
-- Ability to disable or enable javascript of the rendered snapshots
+Works with any kind of Rack application and minitest testing framework.
 
-## Things to do in the far future
-
-- Different representations of snapshot lists
-- Spatially display snapshots and how they connect to each other to demonstrate UI flows
-- Extract more information out of response snapshots - path, page title, how they connect to other snapshots
-- Possibility to add notes to snapshots from within tests (`take_snapshot response, note: "...")
-
+> ℹ️ The Snapshot UI is the next generation of a similar library, [Snapshot Inspector](https://github.com/tomazzlender/snapshot_inspector).
+> It works with any kind of Rack application, not just Rails applications. Future development will take place here, and Snapshot Inspector will be eventually archived.
