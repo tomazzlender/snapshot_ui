@@ -6,7 +6,8 @@ require_relative "snapshot_ui/configuration"
 module SnapshotUI
   DEFAULT_CONFIGURATION = {
     project_root_directory: ".",
-    storage_directory: "tmp/snapshot_ui"
+    storage_directory: "tmp/snapshot_ui",
+    web_url: "http://localhost:3000/ui/snapshots"
   }.freeze
 
   def self.configure
