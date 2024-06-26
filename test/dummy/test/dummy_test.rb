@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "minitest/autorun"
 require "rack/test"
 require "rack/builder"
 require_relative "../../../lib/snapshot_ui/test/minitest_helpers"
