@@ -12,6 +12,8 @@ module Minitest
     def plugin_snapshot_ui_init(_options)
       return unless SnapshotUI.snapshot_taking_enabled?
 
+      SnapshotUI.exit_if_not_configured!
+
       reporter << SnapshotUIReporter.new
 
       SnapshotUI.clear_snapshots_in_progress

@@ -16,6 +16,8 @@ module SnapshotUI
           raise ArgumentError.new(message)
         end
 
+        SnapshotUI.exit_if_not_configured!
+
         increment_take_snapshot_counter_scoped_by_test
 
         SnapshotUI::Snapshot.persist(
