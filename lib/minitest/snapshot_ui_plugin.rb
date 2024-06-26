@@ -24,7 +24,7 @@ module Minitest
     def report
       SnapshotUI.publish_snapshots_in_progress
 
-      io.print "\n\nUI snapshots are ready for review at #{SnapshotUI.configuration.web_url}"
+      io.puts "\n\nUI snapshots are ready for review at #{SnapshotUI.configuration.web_url}"
     end
   end
 end
