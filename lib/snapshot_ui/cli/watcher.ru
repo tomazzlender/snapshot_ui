@@ -12,7 +12,6 @@ WEBSOCKET_ENDPOINT = "http://localhost:7070/cable"
 
 REFRESH_MESSAGE = {identifier: "{\"channel\":\"RefreshChannel\"}", message: "refresh"}.to_json
 CONFIRM_SUBSCRIPTION_MESSAGE = {identifier: "{\"channel\":\"RefreshChannel\"}", type: "confirm_subscription"}.to_json
-PING_MESSAGE = {type: "ping", message: Time.now.to_i.to_s}.to_json
 
 @connections = Set.new
 
@@ -27,7 +26,7 @@ run lambda { |env|
 
       Async do |ping_task|
         loop do
-          connection.write(PING_MESSAGE)
+          connection.write({type: "ping", message: Time.now.to_i.to_s}.to_json)
           connection.flush
           sleep(2)
         end
