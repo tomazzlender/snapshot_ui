@@ -7,7 +7,8 @@ module SnapshotUI
   DEFAULT_CONFIGURATION = {
     project_root_directory: nil,
     storage_directory: nil,
-    web_url: "http://localhost:3000/ui/snapshots"
+    web_url: "http://localhost:3000/ui/snapshots",
+    live_websocket_url: "http://localhost:49152/live"
   }.freeze
 
   def self.configure

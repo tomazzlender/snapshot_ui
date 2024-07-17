@@ -7,7 +7,7 @@
   <meta name="turbo-refresh-method" content="morph">
   <meta name="turbo-refresh-scroll" content="preserve">
   <link rel="stylesheet" href="<%= stylesheet_path("application.css") %>">
-  <meta name="action-cable-url" content="ws://127.0.0.1:7070/cable" />
+  <meta name="action-cable-url" content="<%= SnapshotUI.configuration.live_websocket_url %>" />
   <script type="importmap" data-turbo-track="reload">
     {
       "imports": {

@@ -6,17 +6,19 @@ require "async/websocket/client"
 require "async/websocket/adapters/rack"
 require "listen"
 require "set"
+require "uri"
 
-SNAPSHOT_DIRECTORY = ENV.fetch("SNAPSHOT_DIRECTORY")
-WEBSOCKET_ENDPOINT = "http://localhost:7070/cable"
+load ENV.fetch("SNAPSHOT_UI_INITIALIZER_FILE")
 
 REFRESH_MESSAGE = {identifier: "{\"channel\":\"RefreshChannel\"}", message: "refresh"}.to_json
 CONFIRM_SUBSCRIPTION_MESSAGE = {identifier: "{\"channel\":\"RefreshChannel\"}", type: "confirm_subscription"}.to_json
 
 @connections = Set.new
 
+live_websocket_uri = URI.parse(SnapshotUI.configuration.live_websocket_url)
+
 run lambda { |env|
-  if env["REQUEST_PATH"] == "/cable"
+  if env["REQUEST_PATH"] == live_websocket_uri.path
     Async::WebSocket::Adapters::Rack.open(env, protocols: ["actioncable-v1-json"]) do |connection|
       @connections << connection
 
@@ -49,7 +51,7 @@ run lambda { |env|
 }
 
 Async do |client_task|
-  endpoint = Async::HTTP::Endpoint.parse(WEBSOCKET_ENDPOINT)
+  endpoint = Async::HTTP::Endpoint.parse(SnapshotUI.configuration.live_websocket_url)
 
   Async::WebSocket::Client.connect(endpoint) do |connection|
     Async do |listener_task|
@@ -67,15 +69,15 @@ Async do |client_task|
 end
 
 def detect_snapshots_update(task)
-  Pathname.new(SNAPSHOT_DIRECTORY).mkpath
-  listener = Listen.to(SNAPSHOT_DIRECTORY) { |_modified, _added, _removed| broadcast_update }
+  Pathname.new(SnapshotUI.configuration.storage_directory).mkpath
+  listener = Listen.to(SnapshotUI.configuration.storage_directory) { |_modified, _added, _removed| broadcast_update }
 
   task.async do
     listener.start
     task.sleep
   end
 
-  Console.info("Watching for snapshots updates in #{SNAPSHOT_DIRECTORY}...")
+  Console.info("Watching for snapshots updates in #{SnapshotUI.configuration.storage_directory}...")
 end
 
 def broadcast_update
