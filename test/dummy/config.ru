@@ -6,6 +6,7 @@
 # Then open http://localhost:3001/ui/snapshots
 
 require "snapshot_ui/web"
+require_relative "config/snapshot_ui_initializer"
 
 dummy_app =
   Rack::Builder.app do
