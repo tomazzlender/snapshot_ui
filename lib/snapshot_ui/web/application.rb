@@ -119,6 +119,24 @@ module SnapshotUI
       def refresh_controller
         'data-controller="refresh" data-action="refresh-connected@window->refresh#connected refresh-disconnected@window->refresh#disconnected turbo:before-render@window->refresh#display_status"'
       end
+
+      def snapshot_title(snapshot)
+        title = snapshot.context.name.sub("test_", "").gsub(/^\d{4}\s*/, "").tr("_", " ")
+        suffix =
+          if snapshot.context.take_snapshot_index > 0
+            " (##{snapshot.context.take_snapshot_index + 1} in the same test)"
+          end
+
+        "#{title}#{suffix}"
+      end
+
+      def test_group_title(test_group)
+        parts = test_group.split("::")
+        last_part = "<span class='last'>#{parts.last}</span>"
+        all = parts[0..-2] << last_part
+
+        all.join(" <span class='divider'>/</span> ")
+      end
     end
   end
 end

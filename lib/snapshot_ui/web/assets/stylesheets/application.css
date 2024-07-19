@@ -28,6 +28,15 @@ body#snapshots_index h1 {
 body#snapshots_index h2 {
     margin: 30px 0 0;
     font-size: 24px;
+    color: #aaa;
+}
+
+body#snapshots_index h2 .last {
+    color: #666666;
+}
+
+body#snapshots_index h2 .divider {
+    color: #ccc;
 }
 
 body#snapshots_index p {
