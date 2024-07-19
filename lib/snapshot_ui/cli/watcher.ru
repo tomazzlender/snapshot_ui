@@ -77,7 +77,8 @@ def detect_snapshots_update(task)
     task.sleep
   end
 
-  Console.info("Watching for snapshots updates in #{SnapshotUI.configuration.storage_directory}...")
+  Console.info("Watching for snapshots updates in #{SnapshotUI.configuration.storage_directory}")
+  Console.info("Review snapshots on #{SnapshotUI.configuration.web_url}")
 end
 
 def broadcast_update
