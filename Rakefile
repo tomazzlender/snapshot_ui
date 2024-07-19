@@ -17,6 +17,11 @@ namespace :dummy do
   task :server do
     system "bundle exec puma test/dummy/config.ru -p 3001"
   end
+
+  desc "Start server for broadcasting live updates of snapshots"
+  task :live do
+    system "bundle exec snapshot_ui live test/dummy/config/snapshot_ui_initializer.rb"
+  end
 end
 
 require "standard/rake"
