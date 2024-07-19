@@ -4,7 +4,13 @@ require "bundler/gem_tasks"
 require "minitest/test_task"
 require_relative "lib/snapshot_ui"
 
-Minitest::TestTask.create
+Minitest::TestTask.create("test") do |t|
+  t.test_globs = %w[test/snapshot_ui/**/*_test.rb]
+end
+
+Minitest::TestTask.create("dummy:test") do |t|
+  t.test_globs = %w[test/dummy/test/**/*_test.rb test/dummy/test/**/*_spec.rb]
+end
 
 require "standard/rake"
 
