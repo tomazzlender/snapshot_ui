@@ -4,12 +4,19 @@ require "bundler/gem_tasks"
 require "minitest/test_task"
 require_relative "lib/snapshot_ui"
 
-Minitest::TestTask.create("test") do |t|
+Minitest::TestTask.create(:test) do |t|
   t.test_globs = %w[test/snapshot_ui/**/*_test.rb]
 end
 
-Minitest::TestTask.create("dummy:test") do |t|
-  t.test_globs = %w[test/dummy/test/**/*_test.rb test/dummy/test/**/*_spec.rb]
+namespace :dummy do
+  Minitest::TestTask.create(:test) do |t|
+    t.test_globs = %w[test/dummy/test/**/*_test.rb test/dummy/test/**/*_spec.rb]
+  end
+
+  desc "Start puma server for the dummy application"
+  task :server do
+    system "bundle exec puma test/dummy/config.ru -p 3001"
+  end
 end
 
 require "standard/rake"
