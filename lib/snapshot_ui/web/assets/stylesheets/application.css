@@ -53,8 +53,14 @@ body#snapshots_index h1, h2, h3, h4, h5, h6 {
     color: #666666;
 }
 
-body#snapshots_index a { color: #000; text-decoration: none; }
-body#snapshots_index a:hover { text-decoration: underline; }
+body#snapshots_index a {
+    color: #000;
+    text-decoration: none;
+}
+
+body#snapshots_index a:hover {
+    text-decoration: underline;
+}
 
 body#snapshots_index code {
     background: rgba(175, 184, 193, 0.2);
