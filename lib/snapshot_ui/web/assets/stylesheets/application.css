@@ -116,6 +116,67 @@ body#not_found p {
     color: #666666;
 }
 
+.copy_source_location {
+    all: unset;
+    cursor: pointer;
+    position: relative;
+}
+
+.copy_source_location .icon {
+    width: 0.9em;
+    height: 0.9em;
+    color: #aaa;
+}
+
+.copy_source_location:hover .icon {
+    color: #000;
+}
+
+.copy_source_location.animate .icon {
+    animation: enlarge-and-back-to-normal 0.3s;
+}
+
+@keyframes enlarge-and-back-to-normal {
+    0%,
+    100% {
+        transform: scale(1, 1);
+    }
+    50% {
+        transform: scale(1.3, 1.3);
+    }
+}
+
+.copy_source_location:before {
+    content: attr(data-source-location);
+    position:absolute;
+    font-size: 90%;
+    top:-95%;
+    transform:translateX(-50%);
+    left:100%;
+    margin-top:-15px;
+    padding:3px 15px 1px;
+    border-radius:10px;
+    background:#eee;
+    color: #666;
+    text-align:center;
+    display:none;
+}
+
+.copy_source_location:after {
+    content: "";
+    position:absolute;
+    top:-11px;
+    transform:translateX(-50%);
+    margin-left:10px;
+    border:10px solid #eee;
+    border-color: #eee transparent transparent transparent;
+    display:none;
+}
+
+.copy_source_location:hover:before, .copy_source_location:hover:after {
+    display:block;
+}
+
 /* Hotwired Turbo related */
 .turbo-progress-bar {
     height: 2px;

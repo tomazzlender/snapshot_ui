@@ -51,6 +51,14 @@ bundle exec snapshot_ui watch SNAPSHOT_DIRECTORY</pre>
     <% snapshots.each do |snapshot| %>
       <li>
         <a href="<%= snapshot_path(snapshot.slug) %>"><%= snapshot_title(snapshot) %></a>
+        <button
+           class="copy_source_location"
+           data-controller="source-location"
+           data-action="click->source-location#copy"
+           data-source-location="<%= snapshot.context.source_location.join(":") %>"
+        >
+          <%= copy_icon_svg %>
+        </button>
       </li>
     <% end %>
   </ul>
