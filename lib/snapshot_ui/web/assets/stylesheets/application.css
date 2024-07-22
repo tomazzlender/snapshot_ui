@@ -159,6 +159,7 @@ body#not_found p {
     background:#eee;
     color: #666;
     text-align:center;
+    width: max-content;
     display:none;
 }
 
