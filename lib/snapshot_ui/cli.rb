@@ -5,7 +5,7 @@ require "uri"
 
 module SnapshotUI
   class CLI < Thor
-    desc "live SNAPSHOT_UI_INITIALIZER_FILE", "Run the command to enable live refreshing of UI snapshots."
+    desc "live SNAPSHOT_UI_CONFIG_FILE_PATH", "Run the command to enable live refreshing of UI snapshots."
     def live(initializer_file)
       unless File.exist?(initializer_file)
         puts "The provided initializer file `#{initializer_file}` doesn't exist. Please double check the path."

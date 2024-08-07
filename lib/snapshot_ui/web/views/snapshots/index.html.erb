@@ -2,6 +2,8 @@
   <h1>Snapshots</h1>
 
   <% if @grouped_by_test_class.empty? %>
+    <p>A list of snapshots will appear here once you've taken them.</p>
+
     <p>
       In your integration tests, once a request has been made,
       add <code>#take_screenshot</code>. Run the tests with <code>TAKE_SNAPSHOTS=1</code>, and the snapshot will appear here.
@@ -33,13 +35,12 @@ end
 </pre>
 
   <p>
-    To activate live updates for this page, execute the following command in your terminal.<br>
+    To activate live updates for this page, run the following command in your terminal.<br>
   </p>
   <pre>
-bundle exec snapshot_ui watch SNAPSHOT_DIRECTORY</pre>
+bundle exec snapshot_ui live SNAPSHOT_UI_CONFIG_FILE_PATH</pre>
   <p>
-    where <code>SNAPSHOT_DIRECTORY</code> is a path to a directory that contains
-    snapshot UI data, e.g. <code>tmp/snapshot_ui</code>.
+    where <code>SNAPSHOT_UI_CONFIG_FILE_PATH</code> is a path to the config file where Snapshot UI is configured (e.g. <code>config/snapshot_ui.rb</code>).
   </p>
   <% end %>
 
