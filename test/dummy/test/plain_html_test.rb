@@ -40,7 +40,7 @@ class PlainHtmlTest < Minitest::Test
   def test_example_button_component
     example_button_component = DummyUIComponentLibrary.button(text: "Click me!")
 
-    take_snapshot(PreviewLayout.render(example_button_component))
+    take_snapshot(PreviewLayout.render(example_button_component), title: "Primary Button")
 
     assert_equal "Click me!", Nokogiri::HTML(example_button_component).at_css("button").text
   end

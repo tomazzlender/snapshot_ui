@@ -3,7 +3,7 @@
 module SnapshotUI
   class Snapshot
     class Context
-      attr_reader :test_framework, :test_case_name, :method_name, :source_location, :take_snapshot_index
+      attr_reader :test_framework, :test_case_name, :method_name, :source_location, :take_snapshot_index, :metadata
 
       def initialize(context)
         @test_framework = context[:test_framework]
@@ -11,6 +11,7 @@ module SnapshotUI
         @method_name = context[:method_name]
         @source_location = context[:source_location]
         @take_snapshot_index = context[:take_snapshot_index]
+        @metadata = context[:metadata]
       end
 
       def to_slug

@@ -121,10 +121,14 @@ module SnapshotUI
       end
 
       def snapshot_title(snapshot)
-        title = snapshot.context.name.sub("test_", "").gsub(/^\d{4}\s*/, "").tr("_", " ")
+        snapshot.context.metadata[:title] || generic_snapshot_title(snapshot.context)
+      end
+
+      def generic_snapshot_title(context)
+        title = context.name.sub("test_", "").gsub(/^\d{4}\s*/, "").tr("_", " ")
         suffix =
-          if snapshot.context.take_snapshot_index > 0
-            " (##{snapshot.context.take_snapshot_index + 1} in the same test)"
+          if context.take_snapshot_index > 0
+            " (##{context.take_snapshot_index + 1} in the same test)"
           end
 
         "#{title}#{suffix}"

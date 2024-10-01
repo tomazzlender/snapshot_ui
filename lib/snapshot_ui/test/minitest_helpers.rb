@@ -6,7 +6,7 @@ require_relative "../snapshot"
 module SnapshotUI
   module Test
     module MinitestHelpers
-      def take_snapshot(snapshotee)
+      def take_snapshot(snapshotee, title: nil)
         return unless SnapshotUI.snapshot_taking_enabled?
 
         unless snapshotee.respond_to?(:body) || snapshotee.is_a?(String)
@@ -28,7 +28,8 @@ module SnapshotUI
             method_name: name,
             source_location: build_source_location(caller_locations(1..1).first),
             test_case_name: self.class.to_s,
-            take_snapshot_index: _take_snapshot_counter - 1
+            take_snapshot_index: _take_snapshot_counter - 1,
+            metadata: {title: title}
           }
         )
       end

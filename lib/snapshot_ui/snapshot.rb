@@ -79,7 +79,8 @@ module SnapshotUI
           test_case_name: context.test_case_name,
           method_name: context.method_name,
           source_location: context.source_location,
-          take_snapshot_index: context.take_snapshot_index
+          take_snapshot_index: context.take_snapshot_index,
+          metadata: context.metadata
         },
         slug: context.to_slug
       }
