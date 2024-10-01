@@ -6,6 +6,16 @@ require_relative "../snapshot"
 module SnapshotUI
   module Test
     module MinitestHelpers
+      # Takes a snapshot of a given +snapshotee+, with an optional +title+ metadata.
+      #
+      # A +snapshotee+ can be an object that responds to +#body+ or of class +String+.
+      #
+      # +take_snapshot+ needs to be called after the +snapshotee+ object becomes available
+      # for inspection in the lifecycle of the test. You can take one or more snapshots in a single test case.
+
+      # @param snapshotee [Object, String] an +Object+ that responds to the +#body+ method that returns a +String+, or a +String+
+      # @param title [String, nil] (optional) a title of the snapshotee. When not provided the title will be generated from a test description.
+      # @return SnapshotUI::Snapshot
       def take_snapshot(snapshotee, title: nil)
         return unless SnapshotUI.snapshot_taking_enabled?
 
