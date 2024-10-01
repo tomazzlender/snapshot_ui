@@ -53,7 +53,12 @@ module SnapshotUI
     end
 
     def extract(snapshotee:, context:)
-      @body = snapshotee.body
+      @body =
+        if snapshotee.respond_to?(:body)
+          snapshotee.body
+        elsif snapshotee.is_a?(String)
+          snapshotee
+        end
       @snapshotee_class = snapshotee.class.to_s
       @context = Context.new(context)
       self

@@ -9,11 +9,12 @@ module SnapshotUI
       def take_snapshot(snapshotee)
         return unless SnapshotUI.snapshot_taking_enabled?
 
-        unless snapshotee.respond_to?(:body)
+        unless snapshotee.respond_to?(:body) || snapshotee.is_a?(String)
           message =
-            "#take_snapshot only accepts an argument that responds to a method `#body`. " \
-            "You provided an argument of type `#{snapshotee.class}` that does not respond to `#body`."
-          raise ArgumentError.new(message)
+            "#take_snapshot only accepts an argument that responds to a method `#body` " \
+            "or an argument that is of type `String`. " \
+            "You provided an argument of type `#{snapshotee.class}` that does not respond to `#body` nor is a `String`."
+          raise ArgumentError, message
         end
 
         SnapshotUI.exit_if_not_configured!
