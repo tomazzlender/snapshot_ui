@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "rack", "~> 3.0"
   spec.add_dependency "listen", "~> 3.9"
+  spec.add_dependency "logger", "~> 1.6"
   spec.add_dependency "async-websocket", "~> 0.26"
   spec.add_dependency "falcon", "~> 0.47"
   spec.add_dependency "thor", "~> 1.3"
