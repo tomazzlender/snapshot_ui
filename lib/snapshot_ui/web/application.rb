@@ -89,15 +89,15 @@ module SnapshotUI
       end
 
       def snapshot_path(slug)
-        [root_path, "response", slug].join("/")
+        [root_path, slug].join("/")
       end
 
       def raw_snapshot_path(slug)
-        [root_path, "response", "raw", slug].join("/")
+        [root_path, "raw", slug].join("/")
       end
 
       def parse_snapshot_path(path)
-        pattern = %r{^/response/(?<slug>.+)$}
+        pattern = %r{^/(?<slug>.+)$}
 
         if (match = pattern.match(path))
           match[:slug]
@@ -105,7 +105,7 @@ module SnapshotUI
       end
 
       def parse_raw_snapshot_path(path)
-        pattern = %r{^/response/raw/(?<slug>.+)$}
+        pattern = %r{^/raw/(?<slug>.+)$}
 
         if (match = pattern.match(path))
           match[:slug]

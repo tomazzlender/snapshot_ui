@@ -33,14 +33,14 @@ class SnapshotUI::WebTest < Minitest::Spec
   it "renders a single snapshot" do
     copy_snapshot_fixture
 
-    get "/ui/snapshots/response/test/dummy_test_19_0"
-    _(last_response.body).must_match('<iframe id="raw" src="/ui/snapshots/response/raw/test/dummy_test_19_0">')
+    get "/ui/snapshots/test/dummy_test_19_0"
+    _(last_response.body).must_match('<iframe id="raw" src="/ui/snapshots/raw/test/dummy_test_19_0">')
   end
 
   it "renders a raw response body of a snapshot" do
     copy_snapshot_fixture
 
-    get "/ui/snapshots/response/raw/test/dummy_test_19_0"
+    get "/ui/snapshots/raw/test/dummy_test_19_0"
     _(last_response.body).must_match("<html><body>Dummy App</body></html>")
   end
 
