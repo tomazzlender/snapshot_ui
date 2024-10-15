@@ -6,16 +6,16 @@
   "context": {
     "test_framework": "minitest_spec",
     "test_case_name": "DummyTest",
-    "method_name": "test_0001_renders a root page",
+    "method_name": "test_0002_snapshot with a custom path",
     "source_location": [
       "/Users/zlender/Code/snapshot_ui/test/dummy/test/dummy_test.rb",
-      19
+      24
     ],
     "take_snapshot_index": 0,
     "metadata": {
       "title": null,
-      "slug": null
+      "slug": "dummy-app"
     }
   },
-  "slug": "test/dummy_test_19_0"
+  "slug": "dummy-app"
 }

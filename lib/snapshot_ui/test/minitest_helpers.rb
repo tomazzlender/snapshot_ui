@@ -12,11 +12,13 @@ module SnapshotUI
       #
       # +take_snapshot+ needs to be called after the +snapshotee+ object becomes available
       # for inspection in the lifecycle of the test. You can take one or more snapshots in a single test case.
-
+      #
       # @param snapshotee [Object, String] an +Object+ that responds to the +#body+ method that returns a +String+, or a +String+
       # @param title [String, nil] (optional) a title of the snapshotee. When not provided the title will be generated from a test description.
+      # @param slug [String, nil] (optional) a custom URL path for the snapshot (e.g. +/ui/snapshots/__SLUG__+). +slug+ must be unique across all snapshots.
+      #   If not provided, the slug will be automatically generated based on where the snapshot was taken.
       # @return SnapshotUI::Snapshot
-      def take_snapshot(snapshotee, title: nil)
+      def take_snapshot(snapshotee, title: nil, slug: nil)
         return unless SnapshotUI.snapshot_taking_enabled?
 
         unless snapshotee.respond_to?(:body) || snapshotee.is_a?(String)
@@ -39,7 +41,7 @@ module SnapshotUI
             source_location: build_source_location(caller_locations(1..1).first),
             test_case_name: self.class.to_s,
             take_snapshot_index: _take_snapshot_counter - 1,
-            metadata: {title: title}
+            metadata: {title: title, slug: slug}
           }
         )
       end

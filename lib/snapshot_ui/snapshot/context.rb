@@ -15,6 +15,8 @@ module SnapshotUI
       end
 
       def to_slug
+        return metadata[:slug] if metadata[:slug]
+
         test_path_without_extension =
           source_location[0]
             .delete_suffix(File.extname(source_location[0]))
