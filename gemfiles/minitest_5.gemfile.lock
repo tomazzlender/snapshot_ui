@@ -2,7 +2,7 @@ PATH
   remote: ..
   specs:
     snapshot_ui (0.4.1)
-      rack (~> 3.0)
+      rack (>= 2.2, < 4)
 
 GEM
   remote: https://rubygems.org/

@@ -10,7 +10,8 @@ class DummyTest < Minitest::Test
   include SnapshotUI::Test::MinitestHelpers
 
   def app
-    @app ||= Rack::Builder.parse_file("test/dummy/config.ru")
+    # Rack 2's Rack::Builder.parse_file returns [app, options], Rack 3's just the app.
+    @app ||= Array(Rack::Builder.parse_file("test/dummy/config.ru")).first
   end
 
   class FirstNestedGroup < DummyTest

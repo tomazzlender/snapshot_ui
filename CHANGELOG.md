@@ -15,6 +15,7 @@
   (`Minitest.load :snapshot_ui` works as well).
 - Development dependencies updated; CI runs on Ruby 3.2 to 4.0 with both minitest 5 and 6.
 - Requires Ruby 3.2 or newer.
+- Works with Rack 2.2 as well as Rack 3, so it can be used in Rails 6.1 and 7.0 applications.
 
 ## [0.1.0] - 2024-06-09
 

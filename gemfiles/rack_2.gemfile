@@ -1,0 +1,18 @@
+# frozen_string_literal: true
+
+# The test suite against Rack 2 (the default Gemfile uses Rack 3). Used by
+# .github/workflows/main.yml.
+
+source "https://rubygems.org"
+
+gemspec path: ".."
+
+gem "rack", "~> 2.2"
+gem "rake"
+gem "rack-test"
+gem "minitest"
+gem "puma"
+gem "standard"
+gem "debug"
+gem "nokogiri"
+gem "minitest-focus"

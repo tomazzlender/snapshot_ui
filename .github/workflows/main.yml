@@ -22,6 +22,9 @@ jobs:
         gemfile:
           - Gemfile
           - gemfiles/minitest_5.gemfile
+        include:
+          - ruby: '3.2'
+            gemfile: gemfiles/rack_2.gemfile
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}
 
