@@ -13,8 +13,8 @@
 - Works with minitest 6, which no longer discovers plugins on its own: requiring `snapshot_ui/test/minitest_helpers`
   now registers the minitest plugin, so `--take-snapshots` and publishing at the end of a run keep working
   (`Minitest.load :snapshot_ui` works as well).
-- Development dependencies updated; CI runs on Ruby 3.2 to 4.0 with both minitest 5 and 6.
-- Requires Ruby 3.2 or newer.
+- Development dependencies updated; CI runs on Ruby 3.3 to 4.0 with both minitest 5 and 6.
+- Requires Ruby 3.3 or newer.
 - Works with Rack 2.2 as well as Rack 3, so it can be used in Rails 6.1 and 7.0 applications.
 - Terminal colours are only used when writing to a terminal, and not when `NO_COLOR` is set.
 - Snapshot files no longer record the class of the object passed to `take_snapshot`; it was never used.

@@ -15,7 +15,6 @@ jobs:
       fail-fast: false
       matrix:
         ruby:
-          - '3.2'
           - '3.3'
           - '3.4'
           - '4.0'
@@ -23,7 +22,7 @@ jobs:
           - Gemfile
           - gemfiles/minitest_5.gemfile
         include:
-          - ruby: '3.2'
+          - ruby: '3.3'
             gemfile: gemfiles/rack_2.gemfile
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}
