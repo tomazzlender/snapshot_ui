@@ -69,7 +69,11 @@ class SnapshotUI::WebTest < Minitest::Spec
     copy_snapshot_fixture
 
     get "/ui/snapshots/non-existing-slug"
+    _(last_response.status).must_equal 404
     _(last_response.body).must_match("Not Found")
+
+    get "/ui/snapshots/raw/non-existing-slug"
+    _(last_response.status).must_equal 404
   end
 
   it "wires pages up for live updates, with all assets served by the app itself" do

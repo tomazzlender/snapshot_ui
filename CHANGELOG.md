@@ -19,6 +19,7 @@
 - Terminal colours are only used when writing to a terminal, and not when `NO_COLOR` is set.
 - Snapshot files no longer record the class of the object passed to `take_snapshot`; it was never used.
 - `rake vendor:update` downloads the latest Turbo and Stimulus into the gem.
+- Pages for snapshots that can't be found respond with 404 instead of 200.
 - The Rack application serving the UI is built once instead of on every request.
 
 ## [0.1.0] - 2024-06-09

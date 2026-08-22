@@ -24,10 +24,10 @@ module SnapshotUI
           @snapshot = Snapshot.find(slug)
           render("snapshots/show", status: 200)
         else
-          render("snapshots/not_found", status: 200)
+          render("snapshots/not_found", status: 404)
         end
       rescue SnapshotUI::Snapshot::NotFound
-        render("snapshots/not_found", status: 200)
+        render("snapshots/not_found", status: 404)
       end
 
       private
