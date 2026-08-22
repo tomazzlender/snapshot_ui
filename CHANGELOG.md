@@ -17,6 +17,7 @@
 - Requires Ruby 3.2 or newer.
 - Works with Rack 2.2 as well as Rack 3, so it can be used in Rails 6.1 and 7.0 applications.
 - Terminal colours are only used when writing to a terminal, and not when `NO_COLOR` is set.
+- Snapshot files no longer record the class of the object passed to `take_snapshot`; it was never used.
 
 ## [0.1.0] - 2024-06-09
 

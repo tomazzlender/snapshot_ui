@@ -65,7 +65,6 @@ module SnapshotUI
         elsif snapshotee.is_a?(String)
           snapshotee
         end
-      @snapshotee_class = snapshotee.class.to_s
       @context = Context.new(context)
       self
     end
@@ -77,7 +76,6 @@ module SnapshotUI
     def as_json
       {
         type_data: {
-          snapshotee_class: @snapshotee_class,
           body: body
         },
         context: {

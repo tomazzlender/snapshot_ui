@@ -1,10 +1,9 @@
 {
   "type_data": {
-    "snapshotee_class": "Rack::MockResponse",
     "body": "<html><body>Dummy App</body></html>"
   },
   "context": {
-    "test_framework": "minitest_spec",
+    "test_framework": "minitest",
     "test_case_name": "DummyTest",
     "method_name": "test_0002_snapshot with a custom path",
     "source_location": [
