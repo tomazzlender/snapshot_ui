@@ -37,3 +37,29 @@ namespace :snapshot_ui do
     puts "✅  Snapshots cleared."
   end
 end
+
+namespace :vendor do
+  desc "Download the latest Turbo and Stimulus (or TURBO_VERSION / STIMULUS_VERSION) into the vendored assets"
+  task :update do
+    require "json"
+    require "net/http"
+
+    fetch = lambda do |url|
+      response = Net::HTTP.get_response(URI(url))
+      response = Net::HTTP.get_response(URI(response["location"])) while response.is_a?(Net::HTTPRedirection)
+      raise "#{url}: HTTP #{response.code}" unless response.is_a?(Net::HTTPSuccess)
+
+      response.body
+    end
+
+    {"turbo" => "@hotwired/turbo", "stimulus" => "@hotwired/stimulus"}.each do |name, package|
+      version = ENV["#{name.upcase}_VERSION"] || JSON.parse(fetch.call("https://registry.npmjs.org/#{package}/latest"))["version"]
+      manifest = JSON.parse(fetch.call("https://registry.npmjs.org/#{package}/#{version}"))
+      source = fetch.call("https://cdn.jsdelivr.net/npm/#{package}@#{version}/#{manifest["module"]}")
+      path = "lib/snapshot_ui/web/assets/javascripts/vendor/#{name}.js"
+
+      File.write(path, "// #{package} #{version} (#{manifest["license"]}), vendored with `rake vendor:update`\n#{source}")
+      puts "#{path}: #{package} #{version}"
+    end
+  end
+end
