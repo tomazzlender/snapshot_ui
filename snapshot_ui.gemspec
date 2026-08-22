@@ -19,17 +19,11 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/CHANGELOG.md"
 
-  spec.files = (`git ls-files | grep -E '^(lib)'`.split("\n") + %w[snapshot_ui.gemspec README.md CHANGELOG.md LICENSE.txt bin/snapshot_ui])
-  spec.executables = ["snapshot_ui"]
+  spec.files = (`git ls-files | grep -E '^(lib)'`.split("\n") + %w[snapshot_ui.gemspec README.md CHANGELOG.md LICENSE.txt])
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "rack", "~> 3.0"
-  spec.add_dependency "listen", "~> 3.9"
-  spec.add_dependency "logger", "~> 1.6"
-  spec.add_dependency "async-websocket", "~> 0.26"
-  spec.add_dependency "falcon", "~> 0.47"
-  spec.add_dependency "thor", "~> 1.3"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

@@ -1,23 +1,22 @@
 # frozen_string_literal: true
 
 require "erb"
-require "rack/static"
 require_relative "../snapshot"
-require "listen"
 
 module SnapshotUI
   class Web
     class Application
       def call(env)
         @request = Rack::Request.new(env)
+        # Read the version before anything else, so that a publish happening while
+        # the page renders is noticed by the next poll instead of being missed.
+        @version = Snapshot.version
 
         if parse_root_path(@request.path_info)
           @grouped_by_test_class = SnapshotUI::Snapshot.grouped_by_test_case
-          if @request.get_header("HTTP_ACCEPT") != "text/event-stream"
-            render("snapshots/index", status: 200)
-          else
-            [200, {"content-type" => "text/event-stream", "cache-control" => "no-cache", "connection" => "keep-alive"}, file_event_stream(SnapshotUI.configuration.storage_directory)]
-          end
+          render("snapshots/index", status: 200)
+        elsif parse_version_path(@request.path_info)
+          render_version
         elsif (slug = parse_raw_snapshot_path(@request.path_info))
           @snapshot = Snapshot.find(slug)
           render_raw_response_body(@snapshot.body)
@@ -33,22 +32,17 @@ module SnapshotUI
 
       private
 
-      def file_event_stream(directory)
-        message = '<turbo-stream action="refresh"></turbo-stream>'
+      # Polled by the browser (assets/javascripts/controllers/refresh_controller.js)
+      # to find out when the published snapshots change. Answers 304 Not Modified while the
+      # client's version is still current.
+      def render_version
+        etag = %("#{@version}")
+        headers = {"etag" => etag, "cache-control" => "no-cache"}
 
-        Enumerator.new do |stream|
-          listener = Listen.to(directory) do |_modified, _added, _removed|
-            stream << "data: #{message}\n\n"
-          end
-
-          listener.start
-          sleep
-        rescue Puma::ConnectionError
-          listener.stop
-          puts "Puma::ConnectionError"
-        rescue Errno::EPIPE
-          listener.stop
-          puts "Errno::EPIPE"
+        if @request.get_header("HTTP_IF_NONE_MATCH") == etag
+          [304, headers, []]
+        else
+          [200, headers.merge("content-type" => "text/plain; charset=utf-8"), [@version]]
         end
       end
 
@@ -64,7 +58,7 @@ module SnapshotUI
         [status, response_headers, [response_body]]
       end
 
-      def get_binding
+      def get_binding(&_block)
         binding
       end
 
@@ -80,12 +74,21 @@ module SnapshotUI
         @request.env["SCRIPT_NAME"]
       end
 
-      def stylesheet_path(stylesheet)
-        [root_path, "stylesheets", stylesheet].join("/")
+      def version_path
+        [root_path, "version"].join("/")
       end
 
-      def javascript_path(stylesheet)
-        [root_path, "javascripts", stylesheet].join("/")
+      def stylesheet_path(stylesheet)
+        asset_path("stylesheets", stylesheet)
+      end
+
+      def javascript_path(javascript)
+        asset_path("javascripts", javascript)
+      end
+
+      # Versioned, so that browsers don't keep using the assets of a previous release.
+      def asset_path(directory, file)
+        "#{[root_path, directory, file].join("/")}?v=#{SnapshotUI::VERSION}"
       end
 
       def snapshot_path(slug)
@@ -116,8 +119,15 @@ module SnapshotUI
         path == "" || path == "/"
       end
 
+      def parse_version_path(path)
+        path == "/version"
+      end
+
+      # Wires <body> up to the Stimulus controller that keeps the page in sync with
+      # the published snapshots (assets/javascripts/controllers/refresh_controller.js).
       def refresh_controller
-        'data-controller="refresh" data-action="refresh-connected@window->refresh#connected refresh-disconnected@window->refresh#disconnected turbo:before-render@window->refresh#display_status"'
+        %(data-controller="refresh" data-refresh-url-value="#{version_path}" data-refresh-version-value="#{@version}" ) +
+          %(data-action="turbo:render@window->refresh#displayStatus visibilitychange@document->refresh#check")
       end
 
       def snapshot_title(snapshot)

@@ -6,20 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="turbo-refresh-method" content="morph">
   <meta name="turbo-refresh-scroll" content="preserve">
-  <link rel="stylesheet" href="<%= stylesheet_path("application.css") %>">
-  <meta name="action-cable-url" content="<%= SnapshotUI.configuration.live_websocket_url %>" />
+  <link rel="stylesheet" href="<%= stylesheet_path("application.css") %>" data-turbo-track="reload">
   <script type="importmap" data-turbo-track="reload">
     {
       "imports": {
         "application": "<%= javascript_path("application.js") %>",
-        "@hotwired/stimulus": "https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.2/+esm",
-        "@hotwired/turbo": "https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.4/+esm",
-        "@rails/actioncable": "https://cdn.jsdelivr.net/npm/@rails/actioncable@7.1.3-4/+esm",
+        "@hotwired/turbo": "<%= javascript_path("vendor/turbo.js") %>",
+        "@hotwired/stimulus": "<%= javascript_path("vendor/stimulus.js") %>",
         "controllers/refresh_controller": "<%= javascript_path("controllers/refresh_controller.js") %>",
-        "controllers/source_location_controller": "<%= javascript_path("controllers/source_location_controller.js") %>",
-        "channels/consumer": "<%= javascript_path("channels/consumer.js") %>",
-        "channels": "<%= javascript_path("channels/index.js") %>",
-        "channels/refresh_channel": "<%= javascript_path("channels/refresh_channel.js") %>"
+        "controllers/source_location_controller": "<%= javascript_path("controllers/source_location_controller.js") %>"
       }
     }
   </script>

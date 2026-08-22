@@ -6,7 +6,7 @@
 
     <p>
       In your integration tests, once a request has been made,
-      add <code>#take_screenshot</code>. Run the tests with <code>TAKE_SNAPSHOTS=1</code>, and the snapshot will appear here.
+      add <code>#take_snapshot</code>. Run the tests with <code>TAKE_SNAPSHOTS=1</code>, and the snapshot will appear here.
     </p>
 
     <p>Look below at an example integration test.</p>
@@ -34,14 +34,7 @@ class ApplicationTest < Minitest::Spec
 end
 </pre>
 
-  <p>
-    To activate live updates for this page, run the following command in your terminal.<br>
-  </p>
-  <pre>
-bundle exec snapshot_ui live SNAPSHOT_UI_CONFIG_FILE_PATH</pre>
-  <p>
-    where <code>SNAPSHOT_UI_CONFIG_FILE_PATH</code> is a path to the config file where Snapshot UI is configured (e.g. <code>config/snapshot_ui.rb</code>).
-  </p>
+  <p>This page refreshes automatically whenever snapshots are updated.</p>
   <% end %>
 
   <% @grouped_by_test_class.each do |test_group, snapshots| %>

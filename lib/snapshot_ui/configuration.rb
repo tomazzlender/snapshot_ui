@@ -5,13 +5,12 @@ require_relative "colorize"
 module SnapshotUI
   class Configuration
     attr_writer :storage_directory, :project_root_directory
-    attr_accessor :web_url, :live_websocket_url
+    attr_accessor :web_url
 
-    def initialize(project_root_directory:, storage_directory:, web_url:, live_websocket_url:)
+    def initialize(project_root_directory:, storage_directory:, web_url:)
       @project_root_directory = project_root_directory
       @storage_directory = storage_directory
       @web_url = web_url
-      @live_websocket_url = live_websocket_url
     end
 
     def storage_directory
@@ -20,6 +19,16 @@ module SnapshotUI
 
     def project_root_directory
       Pathname.new(@project_root_directory) if @project_root_directory
+    end
+
+    # Live updates no longer need a separate WebSocket server: the web UI polls
+    # for changes instead. Kept so that existing configuration files keep working.
+    def live_websocket_url=(_value)
+      warn(
+        "[snapshot_ui] `config.live_websocket_url` is deprecated and has no effect: " \
+        "the web UI now polls for snapshot updates. Remove it from your configuration.",
+        uplevel: 1
+      )
     end
 
     def exit_if_not_configured!

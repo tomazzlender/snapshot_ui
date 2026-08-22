@@ -12,6 +12,24 @@ module SnapshotUI
           SnapshotUI.configuration.storage_directory.join("in_progress")
         end
 
+        # Holds the previously published snapshots for the brief moment while the
+        # ones in progress take their place.
+        def previous_snapshots_directory
+          SnapshotUI.configuration.storage_directory.join("previous_snapshots")
+        end
+
+        # A token that changes whenever the published snapshots change.
+        #
+        # Publishing swaps in a freshly created directory (see
+        # .publish_snapshots_in_progress), so the modification time of the
+        # snapshots directory identifies the published set.
+        def version
+          return "0" unless snapshots_directory.exist?
+
+          mtime = snapshots_directory.mtime
+          format("%d.%09d", mtime.to_i, mtime.nsec)
+        end
+
         def write(key, value)
           file_path = to_file_path_for_writing(key)
           file_path.dirname.mkpath
@@ -37,12 +55,19 @@ module SnapshotUI
           else
             snapshots_directory.rmtree
             in_progress_directory.rmtree
+            previous_snapshots_directory.rmtree if previous_snapshots_directory.exist?
           end
         end
 
+        # Replaces the published snapshots with the ones in progress. The published
+        # directory is moved aside rather than deleted first, so that there is
+        # practically no moment without published snapshots (the web UI polls for
+        # changes and would otherwise briefly show an empty list).
         def publish_snapshots_in_progress
-          clear(:snapshots)
+          previous_snapshots_directory.rmtree if previous_snapshots_directory.exist?
+          snapshots_directory.rename(previous_snapshots_directory) if snapshots_directory.exist?
           in_progress_directory.rename(snapshots_directory)
+          previous_snapshots_directory.rmtree if previous_snapshots_directory.exist?
         end
 
         private

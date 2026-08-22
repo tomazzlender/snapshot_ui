@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "pathname"
+require "fileutils"
+require_relative "snapshot_ui/version"
 require_relative "snapshot_ui/snapshot"
 require_relative "snapshot_ui/configuration"
 
@@ -7,8 +10,7 @@ module SnapshotUI
   DEFAULT_CONFIGURATION = {
     project_root_directory: nil,
     storage_directory: nil,
-    web_url: "http://localhost:3000/ui/snapshots",
-    live_websocket_url: "http://localhost:49152/live"
+    web_url: "http://localhost:3000/ui/snapshots"
   }.freeze
 
   def self.configure

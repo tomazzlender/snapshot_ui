@@ -40,6 +40,12 @@ module SnapshotUI
       Storage.clear
     end
 
+    # A token that changes whenever the published snapshots change. The web UI
+    # polls it to know when to refresh.
+    def self.version
+      Storage.version
+    end
+
     private_class_method def self.all
       snapshots = Storage.list.map { |slug| find(slug) }
 
