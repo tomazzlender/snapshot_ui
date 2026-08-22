@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+# The test suite against minitest 5 (the default Gemfile uses the latest
+# minitest). Used by .github/workflows/main.yml.
+
+source "https://rubygems.org"
+
+gemspec path: ".."
+
+gem "rake"
+gem "rack-test"
+gem "minitest", "~> 5.0"
+gem "puma"
+gem "standard"
+gem "debug"
+gem "nokogiri"
+gem "minitest-focus"

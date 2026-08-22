@@ -10,11 +10,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Ruby ${{ matrix.ruby }}
+    name: Ruby ${{ matrix.ruby }} / ${{ matrix.gemfile }}
     strategy:
+      fail-fast: false
       matrix:
         ruby:
-          - '3.3.5'
+          - '3.2'
+          - '3.3'
+          - '3.4'
+          - '4.0'
+        gemfile:
+          - Gemfile
+          - gemfiles/minitest_5.gemfile
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}
 
     steps:
     - uses: actions/checkout@v4

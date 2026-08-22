@@ -13,6 +13,7 @@
 - Works with minitest 6, which no longer discovers plugins on its own: requiring `snapshot_ui/test/minitest_helpers`
   now registers the minitest plugin, so `--take-snapshots` and publishing at the end of a run keep working
   (`Minitest.load :snapshot_ui` works as well).
+- Development dependencies updated; CI runs on Ruby 3.2 to 4.0 with both minitest 5 and 6.
 
 ## [0.1.0] - 2024-06-09
 
