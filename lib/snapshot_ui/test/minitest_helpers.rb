@@ -2,6 +2,7 @@
 
 require_relative "../../snapshot_ui"
 require_relative "../snapshot"
+require_relative "../../minitest/snapshot_ui_plugin"
 
 module SnapshotUI
   module Test

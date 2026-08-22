@@ -10,6 +10,9 @@
 - Publishing snapshots moves the previous ones aside instead of deleting them first, so the list of snapshots is never
   briefly empty while a test run finishes.
 - Fixed `NoMethodError: undefined method 'rmtree'` on Ruby 4.0 by requiring `pathname` explicitly.
+- Works with minitest 6, which no longer discovers plugins on its own: requiring `snapshot_ui/test/minitest_helpers`
+  now registers the minitest plugin, so `--take-snapshots` and publishing at the end of a run keep working
+  (`Minitest.load :snapshot_ui` works as well).
 
 ## [0.1.0] - 2024-06-09
 
