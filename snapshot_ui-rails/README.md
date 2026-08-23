@@ -23,6 +23,8 @@ The `snapshot_ui` gem is pulled in automatically.
 
 ## Usage
 
+With the defaults, the whole setup is one line in your routes — **no initializer, no configuration**.
+
 ### 1. Mount the web interface
 
 Snapshot UI is a development tool: it displays artifacts captured during test runs and has nothing to show in
@@ -37,15 +39,7 @@ end
 ```
 
 This mounts the UI at `/rails/ui_snapshots` — alongside Rails' own development tools such as `/rails/info` and
-`/rails/mailers`. To mount it elsewhere:
-
-```ruby
-mount_snapshot_ui at: "/admin/snapshots"
-```
-
-If you take snapshots in your `test` environment and review them by booting a `development` server against the same
-`tmp` directory (the usual setup), the development-only guard above is all you need. Adjust the condition if your
-workflow differs.
+`/rails/mailers`.
 
 ### 2. Take snapshots in your integration tests
 
@@ -86,37 +80,53 @@ bin/rails test test/integration --take-snapshots
 At the end of the run the URL to review the snapshots is printed. Start your app (`bin/rails server`) and open
 <http://localhost:3000/rails/ui_snapshots>. The page refreshes automatically as you take new snapshots.
 
-## Configuration
-
-Everything is inferred from the Rails application, so no initializer is needed. The defaults:
-
-| Setting                   | Default                                          |
-| ------------------------- | ------------------------------------------------ |
-| `project_root_directory`  | `Rails.root`                                     |
-| `storage_directory`       | `Rails.root/tmp/snapshot_ui`                     |
-| mount path / `web_url`    | `/rails/ui_snapshots` on `http://localhost:3000` |
-
-To override, set them under `config.snapshot_ui` (in `config/application.rb` or an environment file), or configure
-`snapshot_ui` directly in an initializer — both run after this gem's defaults:
-
-```ruby
-# config/application.rb
-config.snapshot_ui.mount_path = "/admin/snapshots"
-config.snapshot_ui.web_url = "http://localhost:4000/admin/snapshots"
-```
-
-You'll usually want `tmp/snapshot_ui` ignored by git:
+You'll usually want the snapshots directory ignored by git:
 
 ```
 # .gitignore
 /tmp/snapshot_ui/
 ```
 
+## Configuration
+
+**None is required.** Everything is inferred from the Rails application:
+
+| Setting                  | Default                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------- |
+| `project_root_directory` | `Rails.root`                                                                     |
+| `storage_directory`      | `Rails.root/tmp/snapshot_ui`                                                     |
+| `mount_path`             | `/rails/ui_snapshots`                                                            |
+| `host`                   | the app's `default_url_options`, else `PORT`, else `http://localhost:3000`       |
+
+The mount path and host are only used to build the "ready for review" URL printed after a test run and the link on the
+UI's empty state; the interface itself works wherever it is mounted.
+
+To override, add an initializer — it runs after this gem's defaults, so your values win:
+
+```ruby
+# config/initializers/snapshot_ui.rb
+Rails.application.configure do
+  # Mount somewhere other than /rails/ui_snapshots (also change the argument to mount_snapshot_ui):
+  config.snapshot_ui.mount_path = "/admin/snapshots"
+
+  # Only needed if your development server isn't on http://localhost:3000:
+  config.snapshot_ui.host = "http://localhost:4000"
+end
+```
+
+```ruby
+# config/routes.rb — pass the same path when it isn't the default
+mount_snapshot_ui at: "/admin/snapshots" if Rails.env.development?
+```
+
+If you already set `config.action_controller.default_url_options`, the host is taken from there and you don't need to
+set `config.snapshot_ui.host` at all.
+
 ## How it works
 
 The gem is a thin adapter over `snapshot_ui`. A Railtie:
 
-* fills in `SnapshotUI.configuration` from `Rails.root` and the mount path;
+* fills in `SnapshotUI.configuration` from `Rails.root`, the mount path and the resolved host;
 * requires the `mount_snapshot_ui` router helper, which mounts the same `SnapshotUI::Web` Rack app the core gem ships;
 * includes `SnapshotUI::Test::MinitestHelpers` into `ActionDispatch::IntegrationTest` via `ActiveSupport.on_load`.
 
