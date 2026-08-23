@@ -6,12 +6,18 @@ require "json"
 
 module SnapshotUI
   class Snapshot
-    attr_reader :slug, :context, :body
+    # The kind of thing a snapshot holds. "response" is the default and the only
+    # type the core gem knows how to capture; other types (e.g. "mail", added by
+    # snapshot_ui-rails) store their own data under +type_data+ and are rendered
+    # by a registered renderer (see SnapshotUI::Web).
+    DEFAULT_TYPE = "response"
+
+    attr_reader :slug, :context, :type, :type_data
 
     class NotFound < StandardError; end
 
-    def self.persist(snapshotee:, context:)
-      new.extract(snapshotee: snapshotee, context: context).persist
+    def self.persist(snapshotee:, context:, type: DEFAULT_TYPE, type_data: nil)
+      new.extract(snapshotee: snapshotee, context: context, type: type, type_data: type_data).persist
     end
 
     def self.find(slug)
@@ -60,13 +66,12 @@ module SnapshotUI
       end
     end
 
-    def extract(snapshotee:, context:)
-      @body =
-        if snapshotee.respond_to?(:body)
-          snapshotee.body
-        elsif snapshotee.is_a?(String)
-          snapshotee
-        end
+    # +type_data+ lets a caller supply the stored payload directly (used by
+    # snapshot_ui-rails for mail). When omitted, the response body is extracted
+    # from the snapshotee.
+    def extract(snapshotee:, context:, type: DEFAULT_TYPE, type_data: nil)
+      @type = type
+      @type_data = type_data || extract_response_type_data(snapshotee)
       @context = Context.new(context)
       self
     end
@@ -75,11 +80,19 @@ module SnapshotUI
       Storage.write(context.to_slug, JSON.pretty_generate(as_json))
     end
 
+    # The response body, for the default "response" type.
+    def body
+      type_data[:body]
+    end
+
+    def response?
+      type == DEFAULT_TYPE
+    end
+
     def as_json
       {
-        type_data: {
-          body: body
-        },
+        type: type,
+        type_data: type_data,
         context: {
           test_framework: context.test_framework,
           test_case_name: context.test_case_name,
@@ -93,10 +106,26 @@ module SnapshotUI
     end
 
     def from_json(json)
-      @body = json[:type_data][:body]
+      # Snapshots written before types existed have no :type and their body sits
+      # directly under :type_data — treat them as responses.
+      @type = json[:type] || DEFAULT_TYPE
+      @type_data = json[:type_data] || {}
       @context = Context.new(json[:context])
       @slug = json[:slug]
       self
+    end
+
+    private
+
+    def extract_response_type_data(snapshotee)
+      body =
+        if snapshotee.respond_to?(:body)
+          snapshotee.body
+        elsif snapshotee.is_a?(String)
+          snapshotee
+        end
+
+      {body: body}
     end
   end
 end

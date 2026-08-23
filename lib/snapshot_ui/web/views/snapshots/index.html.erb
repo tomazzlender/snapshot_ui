@@ -44,7 +44,7 @@ end
   <ul>
     <% snapshots.each do |snapshot| %>
       <li>
-        <a href="<%= snapshot_path(snapshot.slug) %>"><%= snapshot_title(snapshot) %></a>
+        <a href="<%= snapshot_path(snapshot.slug) %>"><%= snapshot_title(snapshot) %></a><%= snapshot_type_badge(snapshot) %>
         <button
            class="copy_source_location"
            data-controller="source-location"

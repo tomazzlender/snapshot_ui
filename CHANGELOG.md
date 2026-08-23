@@ -1,5 +1,8 @@
 ## [Unreleased]
 
+- Snapshots now carry a type. "response" (the default) is unchanged; other gems can register additional types
+  and renderers (snapshot_ui-rails adds "mail"). Snapshots written before this are read as responses.
+
 - Live updates no longer need the `snapshot_ui live` command or a separate WebSocket server. The web UI polls a new
   `version` endpoint (`<mount path>/version`, e.g. `/ui/snapshots/version`) once a second and refreshes the page
   through Turbo when the published snapshots change.

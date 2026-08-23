@@ -19,15 +19,28 @@ module SnapshotUI
           render_version
         elsif (slug = parse_raw_snapshot_path(@request.path_info))
           @snapshot = Snapshot.find(slug)
-          render_raw_response_body(@snapshot.body)
+          render_raw(@snapshot)
         elsif (slug = parse_snapshot_path(@request.path_info))
           @snapshot = Snapshot.find(slug)
-          render("snapshots/show", status: 200)
+          render_show(@snapshot)
         else
           render("snapshots/not_found", status: 404)
         end
       rescue SnapshotUI::Snapshot::NotFound
         render("snapshots/not_found", status: 404)
+      end
+
+      # Exposed for registered renderers (see SnapshotUI::Web.register_renderer).
+      attr_reader :request, :version
+
+      # Wraps already-rendered page HTML (a <body>…) in the shared layout and
+      # returns a Rack response triple. Registered renderers use this so their
+      # pages get the same chrome and live-refresh behaviour as the built-in
+      # ones. The layout calls +refresh_controller+, so pass the view (self) as
+      # the layout's binding context.
+      def render_body_in_layout(body_html, status: 200)
+        response_body = ERB.new(read_template("layout")).result(get_binding { body_html })
+        [status, {"content-type" => "text/html; charset=utf-8"}, [response_body]]
       end
 
       private
@@ -46,8 +59,32 @@ module SnapshotUI
         end
       end
 
-      def render_raw_response_body(response_body)
-        [200, {"content-type" => "text/html; charset=utf-8"}, [response_body]]
+      # The snapshot's page. Responses show the raw body in an iframe; other
+      # types delegate to their registered renderer's #show.
+      def render_show(snapshot)
+        if snapshot.response?
+          render("snapshots/show", status: 200)
+        else
+          status, headers, body = renderer_for(snapshot).show(snapshot, self)
+          [status, headers, body]
+        end
+      end
+
+      # The raw endpoint. Responses serve the stored body as HTML; other types
+      # delegate to their registered renderer's #raw (which may honour params
+      # such as which email part to serve).
+      def render_raw(snapshot)
+        if snapshot.response?
+          [200, {"content-type" => "text/html; charset=utf-8"}, [snapshot.body]]
+        else
+          status, headers, body = renderer_for(snapshot).raw(snapshot, self)
+          [status, headers, body]
+        end
+      end
+
+      def renderer_for(snapshot)
+        SnapshotUI::Web.renderer(snapshot.type) ||
+          raise(SnapshotUI::Snapshot::NotFound, "No renderer registered for snapshot type `#{snapshot.type}`.")
       end
 
       def render(template, status:)
@@ -134,6 +171,13 @@ module SnapshotUI
         snapshot.context.metadata[:title] || generic_snapshot_title(snapshot.context)
       end
 
+      # A small label shown next to non-response snapshots in the list (e.g. mail).
+      def snapshot_type_badge(snapshot)
+        return "" if snapshot.response?
+
+        %(<span class="type_badge type_badge_#{snapshot.type}">#{snapshot.type}</span>)
+      end
+
       def generic_snapshot_title(context)
         title = context.name.sub("test_", "").gsub(/^\d{4}\s*/, "").tr("_", " ")
         suffix =
@@ -160,6 +204,9 @@ module SnapshotUI
           </svg>
         HTML
       end
+
+      # URL helpers registered renderers rely on (defined above under private).
+      public :root_path, :snapshot_path, :raw_snapshot_path
     end
   end
 end

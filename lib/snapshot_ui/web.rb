@@ -7,6 +7,20 @@ require_relative "web/application"
 
 module SnapshotUI
   class Web
+    @renderers = {}
+
+    # Registers a renderer for a snapshot type. A renderer responds to
+    # +show(snapshot, view)+ and +raw(snapshot, view)+, each returning a Rack
+    # response triple; +view+ is the Application instance, which exposes request
+    # and URL helpers. snapshot_ui-rails registers one for the "mail" type.
+    def self.register_renderer(type, renderer)
+      @renderers[type.to_s] = renderer
+    end
+
+    def self.renderer(type)
+      @renderers[type.to_s]
+    end
+
     # The Rack application serving the UI: the static assets in front of
     # Application, which handles a request per instance. Built once.
     def self.app
