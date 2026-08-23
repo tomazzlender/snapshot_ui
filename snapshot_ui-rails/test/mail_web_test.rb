@@ -44,7 +44,7 @@ class MailWebTest < ActionDispatch::IntegrationTest
     get "/rails/ui_snapshots/raw/welcome", params: {part: "text/plain"}
     assert_response :success
     assert_equal "text/plain", @response.media_type
-    assert_includes @response.body, "waiting list"
+    assert_includes @response.body, "Browse available plots"
     refute_includes @response.body, "<h1"
   end
 
