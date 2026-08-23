@@ -77,7 +77,8 @@ previews:
 ```ruby
 class NotifierMailerTest < ActionMailer::TestCase
   test "welcome email" do
-    take_snapshot(NotifierMailer.welcome(user))
+    email = NotifierMailer.welcome(user)
+    take_snapshot(email)
 
     assert_emails 0 # your usual assertions are unaffected
   end
