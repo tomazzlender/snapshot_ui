@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   mount_snapshot_ui
 
   get "/hello", to: "greetings#show"
+  get "/plots/:id", to: "plots#show"
 end

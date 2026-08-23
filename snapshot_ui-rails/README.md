@@ -39,7 +39,9 @@ end
 ```
 
 This mounts the UI at `/rails/ui_snapshots` — alongside Rails' own development tools such as `/rails/info` and
-`/rails/mailers`.
+`/rails/mailers`. Every snapshot you take shows up there, grouped by the test that produced it:
+
+![The list of snapshots](doc/snapshots_index.png)
 
 ### 2. Take snapshots in your integration tests
 
@@ -48,9 +50,9 @@ This mounts the UI at `/rails/ui_snapshots` — alongside Rails' own development
 ```ruby
 require "test_helper"
 
-class GreetingsTest < ActionDispatch::IntegrationTest
-  test "the greeting page" do
-    get "/hello"
+class PlotsTest < ActionDispatch::IntegrationTest
+  test "shows a plot" do
+    get "/plots/A3"
 
     take_snapshot(response)
 
@@ -59,15 +61,20 @@ class GreetingsTest < ActionDispatch::IntegrationTest
 end
 ```
 
+Run the test with snapshots enabled and the response is captured and rendered exactly as it came back — here, a plot
+page from a community-garden site:
+
+![A page response rendered as a snapshot](doc/response_snapshot.png)
+
 `take_snapshot` accepts an object that responds to `#body` (such as the integration test's `response`) or a plain
 `String`, and two options:
 
 ```ruby
-take_snapshot(response, title: "The greeting", slug: "greeting")
+take_snapshot(response, title: "Plot detail", slug: "plot-A3")
 ```
 
 * `title` — the name shown in the list (defaults to a name derived from the test).
-* `slug` — a custom, stable URL for the snapshot (`/rails/ui_snapshots/greeting`); must be unique.
+* `slug` — a custom, stable URL for the snapshot (`/rails/ui_snapshots/plot-A3`); must be unique.
 
 ### 3. Snapshotting Action Mailer emails
 

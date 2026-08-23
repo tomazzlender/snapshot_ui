@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title><%= @plot[:name] %> · Fernwood Community Garden</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, "Segoe UI", system-ui, sans-serif; color: #1f2937; background: #f2f6f2; }
+    header { background: #166534; background-image: linear-gradient(135deg,#166534,#15803d); color: #fff; padding: 18px 32px; display: flex; align-items: center; gap: 10px; }
+    header .logo { font-size: 22px; }
+    header nav { margin-left: auto; display: flex; gap: 22px; font-size: 14px; }
+    header nav a { color: #dcfce7; text-decoration: none; }
+    .wrap { max-width: 860px; margin: 32px auto; padding: 0 20px; }
+    .hero { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .hero .photo { height: 200px; background: linear-gradient(135deg,#bbf7d0,#86efac); display: flex; align-items: center; justify-content: center; font-size: 72px; }
+    .hero .body { padding: 28px 32px; }
+    .badge { display: inline-block; background: #dcfce7; color: #166534; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+    h1 { margin: 12px 0 6px; font-size: 26px; }
+    .meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 24px; margin: 20px 0; }
+    .meta div { font-size: 14px; }
+    .meta strong { display: block; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+    p.desc { font-size: 15px; line-height: 1.6; color: #374151; }
+    .cta { display: inline-block; margin-top: 12px; background: #15803d; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px; }
+    footer { text-align: center; color: #9ca3af; font-size: 13px; padding: 24px; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="logo">🌱</span>
+    <strong>Fernwood Community Garden</strong>
+    <nav><a href="/plots">Plots</a><a href="/about">About</a><a href="/join">Join</a></nav>
+  </header>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="photo">🥕</div>
+      <div class="body">
+        <span class="badge">Available from <%= @plot[:available_from] %></span>
+        <h1><%= @plot[:name] %></h1>
+        <div class="meta">
+          <div><strong>Sunlight</strong><%= @plot[:sun] %></div>
+          <div><strong>Size</strong><%= @plot[:size] %></div>
+          <div><strong>Membership</strong><%= @plot[:price] %></div>
+          <div><strong>Plot ID</strong><%= @plot[:id] %></div>
+        </div>
+        <p class="desc"><%= @plot[:description] %></p>
+        <a class="cta" href="/plots/<%= @plot[:id] %>/reserve">Reserve this plot</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>Fernwood Community Garden · Growing together since 2009</footer>
+</body>
+</html>
