@@ -22,8 +22,12 @@ jobs:
           - Gemfile
           - gemfiles/minitest_5.gemfile
         include:
+          # Core gem against Rack 2.
           - ruby: '3.3'
             gemfile: gemfiles/rack_2.gemfile
+          # snapshot_ui-rails against Rails 7.2 (the default Gemfile covers the latest Rails).
+          - ruby: '3.3'
+            gemfile: gemfiles/rails_7.2.gemfile
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}
 

@@ -19,9 +19,31 @@ namespace :dummy do
   end
 end
 
+def rails_available?
+  Bundler.load.specs.map(&:name).include?("rails")
+rescue Bundler::GemfileNotFound, Bundler::GemNotFound
+  false
+end
+
+namespace :rails do
+  desc "Run the snapshot_ui-rails tests (requires Rails in the bundle)"
+  task :test do
+    if rails_available?
+      require "minitest/test_task"
+      Minitest::TestTask.create(:rails_run) do |t|
+        t.test_globs = %w[snapshot_ui-rails/test/**/*_test.rb]
+        t.warning = false
+      end
+      Rake::Task["rails_run"].invoke
+    else
+      puts "Skipping snapshot_ui-rails tests: Rails is not in this bundle (BUNDLE_GEMFILE=)."
+    end
+  end
+end
+
 require "standard/rake"
 
-task default: %i[test standard]
+task default: %i[test rails:test standard]
 
 namespace :snapshot_ui do
   desc "Clear snapshots"

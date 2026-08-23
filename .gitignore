@@ -7,3 +7,5 @@
 /spec/reports/
 /tmp/
 /test/dummy/tmp/
+/test/rails_dummy/tmp/
+/test/rails_dummy/log/

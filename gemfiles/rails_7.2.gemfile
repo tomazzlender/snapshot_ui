@@ -1,0 +1,19 @@
+# frozen_string_literal: true
+
+# The test suite against Rails 7.2 (the default Gemfile floats to the latest
+# Rails). Used by .github/workflows/main.yml.
+
+source "https://rubygems.org"
+
+gemspec path: "..", name: "snapshot_ui"
+gemspec path: "../snapshot_ui-rails", name: "snapshot_ui-rails"
+
+gem "rails", "~> 7.2.0"
+gem "rake"
+gem "rack-test"
+gem "minitest"
+gem "puma"
+gem "standard"
+gem "debug"
+gem "nokogiri"
+gem "minitest-focus"
