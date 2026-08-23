@@ -69,6 +69,32 @@ take_snapshot(response, title: "The greeting", slug: "greeting")
 * `title` — the name shown in the list (defaults to a name derived from the test).
 * `slug` — a custom, stable URL for the snapshot (`/rails/ui_snapshots/greeting`); must be unique.
 
+### Snapshotting emails
+
+`take_snapshot` also accepts an email, so you can review mailers in the browser instead of maintaining Action Mailer
+previews:
+
+```ruby
+class NotifierMailerTest < ActionMailer::TestCase
+  test "welcome email" do
+    take_snapshot(NotifierMailer.welcome(user))
+
+    assert_emails 0 # your usual assertions are unaffected
+  end
+end
+```
+
+One call captures the whole email. In the UI the snapshot shows:
+
+* the subject, mailer/action and address headers, with the full header set one click away;
+* **both the HTML and the plain-text versions** (a switcher appears when the email has both) — captured from the
+  single message, so there is nothing to keep in sync;
+* attachments, each downloadable, plus a **Download .eml** of the raw message.
+
+`take_snapshot` accepts an `ActionMailer::MessageDelivery` (what a mailer action returns) or a `Mail::Message`, and
+the same `title:` and `slug:` options as responses. It is available in `ActionMailer::TestCase` and in integration
+tests with no explicit `include`.
+
 ### 3. Run the tests and view the snapshots
 
 Snapshots are only taken when you ask for them, via the `--take-snapshots` flag or `TAKE_SNAPSHOTS=1`:

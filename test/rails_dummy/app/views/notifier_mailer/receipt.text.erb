@@ -1,0 +1,10 @@
+Order confirmed — <%= @order[:id] %>
+
+Hi Ada, your order is on its way.
+
+<% @order[:items].each do |name, price| -%>
+- <%= name %>: <%= price %>
+<% end -%>
+Total: <%= @order[:total] %>
+
+View order: https://example.test/orders/<%= @order[:id] %>

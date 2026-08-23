@@ -7,3 +7,6 @@
     (the host defaults from the app's `default_url_options`, then `PORT`, then `http://localhost:3000`).
   - `mount_snapshot_ui` mounts the web interface in `config/routes.rb`; the default path is `/rails/ui_snapshots`.
   - `take_snapshot` is available in `ActionDispatch::IntegrationTest` without an explicit `include`.
+  - `take_snapshot` also captures emails (`ActionMailer::MessageDelivery` or `Mail::Message`) in mailer and
+    integration tests, so mailers can be reviewed in the browser instead of maintaining Action Mailer previews.
+    Both the HTML and plain-text parts are captured, with attachments and an `.eml` download.

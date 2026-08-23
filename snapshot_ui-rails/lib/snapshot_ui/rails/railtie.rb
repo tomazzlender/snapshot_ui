@@ -59,11 +59,28 @@ module SnapshotUI
         require_relative "routes"
       end
 
-      # +take_snapshot+ in integration tests, without an explicit include.
+      # Teach the web interface to render "mail" snapshots.
+      initializer "snapshot_ui.mail_renderer" do
+        require "snapshot_ui/web"
+        require_relative "mail_snapshot"
+        require_relative "web/mail_renderer"
+        SnapshotUI::Web.register_renderer(
+          SnapshotUI::Rails::MailSnapshot::TYPE,
+          SnapshotUI::Rails::Web::MailRenderer
+        )
+      end
+
+      # +take_snapshot+ in tests, without an explicit include. One helper covers
+      # both integration tests (responses) and mailer tests (emails).
       initializer "snapshot_ui.test_helpers" do
         ActiveSupport.on_load(:action_dispatch_integration_test) do
-          require "snapshot_ui/test/minitest_helpers"
-          include SnapshotUI::Test::MinitestHelpers
+          require_relative "test/helpers"
+          include SnapshotUI::Rails::Test::Helpers
+        end
+
+        ActiveSupport.on_load(:action_mailer_test_case) do
+          require_relative "test/helpers"
+          include SnapshotUI::Rails::Test::Helpers
         end
       end
     end

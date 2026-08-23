@@ -1,0 +1,56 @@
+<body id="snapshots_mail" <%= refresh_controller %>>
+  <div class="mail">
+    <header class="mail_header">
+      <a class="back" href="<%= root_path %>">&larr; All snapshots</a>
+      <h1><%= h(mail.message.subject) %></h1>
+      <% if mail.mailer || mail.action %>
+        <p class="mailer"><%= h([mail.mailer, mail.action].compact.join("#")) %></p>
+      <% end %>
+
+      <dl class="fields">
+        <dt>From</dt><dd><%= h(mail.message.header["from"]) %></dd>
+        <dt>To</dt><dd><%= h(mail.message.header["to"]) %></dd>
+        <% if mail.message.cc %><dt>Cc</dt><dd><%= h(mail.message.header["cc"]) %></dd><% end %>
+        <% if mail.message.bcc && !Array(mail.message.bcc).empty? %><dt>Bcc</dt><dd><%= h(Array(mail.message.bcc).join(", ")) %></dd><% end %>
+        <% if mail.message.reply_to %><dt>Reply-To</dt><dd><%= h(mail.message.header["reply-to"]) %></dd><% end %>
+      </dl>
+
+      <div class="mail_toolbar">
+        <% if mail.multipart_alternatives? %>
+          <div class="parts">
+            <a class="part_tab <%= "is_active" if part == SnapshotUI::Rails::Mail::HTML %>" href="<%= show_url(SnapshotUI::Rails::Mail::HTML) %>">HTML</a>
+            <a class="part_tab <%= "is_active" if part == SnapshotUI::Rails::Mail::TEXT %>" href="<%= show_url(SnapshotUI::Rails::Mail::TEXT) %>">Plain text</a>
+          </div>
+        <% else %>
+          <span class="part_single"><%= part == SnapshotUI::Rails::Mail::HTML ? "HTML email" : "Plain-text email" %></span>
+        <% end %>
+
+        <a class="eml" href="<%= eml_url %>">Download .eml</a>
+      </div>
+
+      <% unless mail.attachments.empty? %>
+        <div class="attachments">
+          <span class="attachments_label">Attachments:</span>
+          <% mail.attachments.each do |attachment| %>
+            <a class="attachment" href="<%= attachment_data_uri(attachment) %>" download="<%= h(attachment_filename(attachment)) %>"><%= h(attachment_filename(attachment)) %></a>
+          <% end %>
+        </div>
+      <% end %>
+
+      <details class="all_headers">
+        <summary>All headers</summary>
+        <table>
+          <% mail.message.header_fields.each do |field| %>
+            <tr><td class="name"><%= h(field.name) %></td><td><%= h(field.value) %></td></tr>
+          <% end %>
+        </table>
+      </details>
+    </header>
+
+    <% if mail.part_body(part) %>
+      <iframe id="raw" class="mail_body <%= "is_text" if part == SnapshotUI::Rails::Mail::TEXT %>" src="<%= raw_part_url(part) %>"></iframe>
+    <% else %>
+      <p class="empty">This email has no <%= part == SnapshotUI::Rails::Mail::HTML ? "HTML" : "plain-text" %> part.</p>
+    <% end %>
+  </div>
+</body>
