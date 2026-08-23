@@ -17,8 +17,10 @@ module SnapshotUI
     def self.find(slug)
       json = JSON.parse(Storage.read(slug), symbolize_names: true)
       new.from_json(json)
-    rescue Errno::ENOENT
+    rescue Errno::ENOENT, Errno::EISDIR, Storage::InvalidKey
       raise NotFound.new("Snapshot with a slug `#{slug}` can't be found.")
+    rescue JSON::ParserError => error
+      raise NotFound.new("Snapshot with a slug `#{slug}` can't be read: #{error.message}")
     end
 
     def self.grouped_by_test_case

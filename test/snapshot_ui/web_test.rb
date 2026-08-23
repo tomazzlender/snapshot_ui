@@ -65,6 +65,16 @@ class SnapshotUI::WebTest < Minitest::Spec
     end
   end
 
+  it "does not let a slug escape the snapshots directory" do
+    copy_snapshot_fixture
+
+    get "/ui/snapshots/raw/..%2f..%2f..%2f..%2f..%2f..%2fetc%2fhosts"
+    _(last_response.status).must_equal 404
+
+    get "/ui/snapshots/..%2f..%2f..%2f..%2f..%2f..%2fetc%2fhosts"
+    _(last_response.status).must_equal 404
+  end
+
   it "when a snapshot for a given slug doesn't exist renders not found" do
     copy_snapshot_fixture
 

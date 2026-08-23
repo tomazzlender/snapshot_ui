@@ -21,6 +21,7 @@
 - `rake vendor:update` downloads the latest Turbo and Stimulus into the gem.
 - Pages for snapshots that can't be found respond with 404 instead of 200.
 - The Rack application serving the UI is built once instead of on every request.
+- A malformed snapshot file, or a URL whose slug would point outside the snapshots directory, now renders the not-found page instead of raising a 500 or reading an arbitrary file.
 
 ## [0.1.0] - 2024-06-09
 

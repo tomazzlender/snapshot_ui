@@ -3,6 +3,8 @@
 module SnapshotUI
   class Snapshot
     class Storage
+      class InvalidKey < StandardError; end
+
       class << self
         def snapshots_directory
           SnapshotUI.configuration.storage_directory.join("snapshots")
@@ -38,6 +40,16 @@ module SnapshotUI
 
         def read(key)
           to_file_path_for_reading(key).read
+        end
+
+        # True when +key+ maps to a file inside the snapshots directory. A slug
+        # coming from the URL is untrusted, so paths escaping the directory
+        # (via "..", say) must be refused.
+        def readable?(key)
+          to_file_path_for_reading(key)
+          true
+        rescue InvalidKey
+          false
         end
 
         def list
@@ -77,11 +89,24 @@ module SnapshotUI
         end
 
         def to_file_path_for_reading(key)
-          snapshots_directory.join("#{key}.json")
+          within(snapshots_directory, key)
         end
 
         def to_file_path_for_writing(key)
-          in_progress_directory.join("#{key}.json")
+          within(in_progress_directory, key)
+        end
+
+        # Resolves +key+ to a "#{key}.json" file and ensures it stays inside
+        # +directory+, raising InvalidKey otherwise.
+        def within(directory, key)
+          directory = directory.expand_path
+          file_path = directory.join("#{key}.json").expand_path
+
+          unless file_path == directory || file_path.to_s.start_with?(directory.to_s + File::SEPARATOR)
+            raise InvalidKey, "#{key.inspect} is not a valid snapshot slug."
+          end
+
+          file_path
         end
       end
     end

@@ -54,3 +54,23 @@ class SnapshotUI::Snapshot::StorageTest < Minitest::Spec
     _(storage.list).must_equal ["test/new_test_1_0"]
   end
 end
+
+class SnapshotUI::Snapshot::StorageSlugTest < Minitest::Spec
+  include FixtureHelper
+
+  let(:storage) { SnapshotUI::Snapshot::Storage }
+
+  before { copy_snapshot_fixture }
+
+  it "reads a snapshot stored under a nested slug" do
+    _(JSON.parse(storage.read("test/dummy_test_19_0"))["slug"]).must_equal "test/dummy_test_19_0"
+  end
+
+  it "refuses to read outside the snapshots directory" do
+    _ { storage.read("../../../../../../etc/hosts") }.must_raise SnapshotUI::Snapshot::Storage::InvalidKey
+  end
+
+  it "refuses to write outside the in-progress directory" do
+    _ { storage.write("../escape", "{}") }.must_raise SnapshotUI::Snapshot::Storage::InvalidKey
+  end
+end
