@@ -9,7 +9,7 @@ class SnapshotUIRailsUnitTest < Minitest::Spec
   end
 
   it "exposes the configured mount path" do
-    _(SnapshotUI::Rails.mount_path).must_equal "/ui/snapshots"
+    _(SnapshotUI::Rails.mount_path).must_equal "/rails/ui_snapshots"
   end
 
   it "builds a default web url from a mount path" do

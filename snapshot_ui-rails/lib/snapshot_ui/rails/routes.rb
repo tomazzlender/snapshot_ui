@@ -9,10 +9,10 @@ module ActionDispatch
       #
       #   # config/routes.rb
       #   mount_snapshot_ui
-      #   mount_snapshot_ui at: "/admin/ui/snapshots"
+      #   mount_snapshot_ui at: "/admin/snapshots"
       #
       # With no argument it mounts at +config.snapshot_ui.mount_path+
-      # (default +/ui/snapshots+).
+      # (default +/rails/ui_snapshots+).
       def mount_snapshot_ui(at: SnapshotUI::Rails.mount_path)
         mount SnapshotUI::Web, at: at, as: "snapshot_ui"
       end

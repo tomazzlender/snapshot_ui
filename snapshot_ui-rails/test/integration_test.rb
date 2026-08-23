@@ -22,7 +22,7 @@ class SnapshotUIRailsIntegrationTest < ActionDispatch::IntegrationTest
   test "Snapshot UI is configured from the Rails application" do
     assert_equal Rails.root.to_s, SnapshotUI.configuration.project_root_directory.to_s
     assert_equal Rails.root.join("tmp", "snapshot_ui").to_s, SnapshotUI.configuration.storage_directory.to_s
-    assert_equal "http://localhost:3000/ui/snapshots", SnapshotUI.configuration.web_url
+    assert_equal "http://localhost:3000/rails/ui_snapshots", SnapshotUI.configuration.web_url
   end
 
   test "taking a snapshot of a Rails response writes it under the app's tmp directory" do
@@ -42,7 +42,7 @@ class SnapshotUIRailsIntegrationTest < ActionDispatch::IntegrationTest
     take_snapshot(response, title: "The greeting", slug: "hello")
     SnapshotUI::Snapshot.publish_snapshots_in_progress
 
-    get "/ui/snapshots"
+    get "/rails/ui_snapshots"
     assert_response :success
     assert_includes response.body, "Snapshots"
     assert_includes response.body, "The greeting"
@@ -53,13 +53,13 @@ class SnapshotUIRailsIntegrationTest < ActionDispatch::IntegrationTest
     take_snapshot(response, slug: "hello")
     SnapshotUI::Snapshot.publish_snapshots_in_progress
 
-    get "/ui/snapshots/raw/hello"
+    get "/rails/ui_snapshots/raw/hello"
     assert_response :success
     assert_includes response.body, "Hello from Rails"
   end
 
   test "the mounted UI serves its version endpoint for polling" do
-    get "/ui/snapshots/version"
+    get "/rails/ui_snapshots/version"
     assert_response :success
     assert_equal "0", response.body, "no snapshots published yet"
 
@@ -67,13 +67,13 @@ class SnapshotUIRailsIntegrationTest < ActionDispatch::IntegrationTest
     take_snapshot(response, slug: "hello")
     SnapshotUI::Snapshot.publish_snapshots_in_progress
 
-    get "/ui/snapshots/version"
+    get "/rails/ui_snapshots/version"
     assert_response :success
     assert_match(/\A\d+\.\d{9}\z/, response.body)
   end
 
   test "an unknown snapshot renders the not-found page with a 404" do
-    get "/ui/snapshots/does-not-exist"
+    get "/rails/ui_snapshots/does-not-exist"
     assert_response :not_found
     assert_includes response.body, "Not Found"
   end

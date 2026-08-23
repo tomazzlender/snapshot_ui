@@ -9,7 +9,7 @@ module SnapshotUI
   # configures Snapshot UI from the Rails application and adds the router and
   # test helpers.
   module Rails
-    DEFAULT_MOUNT_PATH = "/ui/snapshots"
+    DEFAULT_MOUNT_PATH = "/rails/ui_snapshots"
 
     class << self
       # The path the UI is mounted at. Set by the railtie from

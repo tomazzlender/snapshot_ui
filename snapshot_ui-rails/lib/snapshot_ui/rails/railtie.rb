@@ -19,10 +19,10 @@ module SnapshotUI
       # Configuration lives under +config.snapshot_ui+.
       #
       #   # config/application.rb or an initializer
-      #   config.snapshot_ui.mount_path = "/admin/ui/snapshots"
-      #   config.snapshot_ui.web_url    = "http://localhost:4000/admin/ui/snapshots"
+      #   config.snapshot_ui.mount_path = "/admin/snapshots"
+      #   config.snapshot_ui.web_url    = "http://localhost:4000/admin/snapshots"
       config.snapshot_ui = ActiveSupport::OrderedOptions.new
-      config.snapshot_ui.mount_path = "/ui/snapshots"
+      config.snapshot_ui.mount_path = "/rails/ui_snapshots"
       config.snapshot_ui.web_url = nil
 
       initializer "snapshot_ui.configure" do |app|

@@ -25,19 +25,27 @@ The `snapshot_ui` gem is pulled in automatically.
 
 ### 1. Mount the web interface
 
+Snapshot UI is a development tool: it displays artifacts captured during test runs and has nothing to show in
+production. Mount it only where you need it, the way you would Sidekiq's or Flipper's dashboards:
+
 ```ruby
 # config/routes.rb
 Rails.application.routes.draw do
-  mount_snapshot_ui
+  mount_snapshot_ui if Rails.env.development?
   # ...
 end
 ```
 
-This mounts the UI at `/ui/snapshots`. To mount it elsewhere:
+This mounts the UI at `/rails/ui_snapshots` — alongside Rails' own development tools such as `/rails/info` and
+`/rails/mailers`. To mount it elsewhere:
 
 ```ruby
-mount_snapshot_ui at: "/admin/ui/snapshots"
+mount_snapshot_ui at: "/admin/snapshots"
 ```
+
+If you take snapshots in your `test` environment and review them by booting a `development` server against the same
+`tmp` directory (the usual setup), the development-only guard above is all you need. Adjust the condition if your
+workflow differs.
 
 ### 2. Take snapshots in your integration tests
 
@@ -65,7 +73,7 @@ take_snapshot(response, title: "The greeting", slug: "greeting")
 ```
 
 * `title` — the name shown in the list (defaults to a name derived from the test).
-* `slug` — a custom, stable URL for the snapshot (`/ui/snapshots/greeting`); must be unique.
+* `slug` — a custom, stable URL for the snapshot (`/rails/ui_snapshots/greeting`); must be unique.
 
 ### 3. Run the tests and view the snapshots
 
@@ -76,25 +84,25 @@ bin/rails test test/integration --take-snapshots
 ```
 
 At the end of the run the URL to review the snapshots is printed. Start your app (`bin/rails server`) and open
-<http://localhost:3000/ui/snapshots>. The page refreshes automatically as you take new snapshots.
+<http://localhost:3000/rails/ui_snapshots>. The page refreshes automatically as you take new snapshots.
 
 ## Configuration
 
 Everything is inferred from the Rails application, so no initializer is needed. The defaults:
 
-| Setting                   | Default                                    |
-| ------------------------- | ------------------------------------------ |
-| `project_root_directory`  | `Rails.root`                               |
-| `storage_directory`       | `Rails.root/tmp/snapshot_ui`               |
-| mount path / `web_url`    | `/ui/snapshots` on `http://localhost:3000` |
+| Setting                   | Default                                          |
+| ------------------------- | ------------------------------------------------ |
+| `project_root_directory`  | `Rails.root`                                     |
+| `storage_directory`       | `Rails.root/tmp/snapshot_ui`                     |
+| mount path / `web_url`    | `/rails/ui_snapshots` on `http://localhost:3000` |
 
 To override, set them under `config.snapshot_ui` (in `config/application.rb` or an environment file), or configure
 `snapshot_ui` directly in an initializer — both run after this gem's defaults:
 
 ```ruby
 # config/application.rb
-config.snapshot_ui.mount_path = "/admin/ui/snapshots"
-config.snapshot_ui.web_url = "http://localhost:4000/admin/ui/snapshots"
+config.snapshot_ui.mount_path = "/admin/snapshots"
+config.snapshot_ui.web_url = "http://localhost:4000/admin/snapshots"
 ```
 
 You'll usually want `tmp/snapshot_ui` ignored by git:
