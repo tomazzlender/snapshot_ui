@@ -143,12 +143,6 @@ and scripts) is served by the app itself, so it works offline.
 * Ruby 3.3 or newer
 * Rack 2.2, or Rack 3
 
-## Compared to Snapshot Inspector
-
-> ℹ️ Snapshot UI is the next generation of a similar library,
-> [Snapshot Inspector](https://github.com/tomazzlender/snapshot_inspector). Snapshot UI works with any Rack
-> application, not just Rails. Future development happens here, and Snapshot Inspector will eventually be archived.
-
 ## License
 
 Released under the [MIT License](LICENSE.txt).
