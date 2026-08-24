@@ -91,7 +91,7 @@ class SnapshotUI::WebTest < Minitest::Spec
 
     get "/ui/snapshots"
     _(last_response.body).must_match('<body id="snapshots_index" data-controller="refresh" data-refresh-url-value="/ui/snapshots/version" data-refresh-version-value="')
-    _(last_response.body).must_match(/data-refresh-version-value="\d+\.\d{9}"/)
+    _(last_response.body).must_match(/data-refresh-version-value="\d+\.\d{9}-\d+"/)
 
     importmap = JSON.parse(last_response.body[%r{<script type="importmap"[^>]*>(.*?)</script>}m, 1])
     _(importmap["imports"].keys).must_include "@hotwired/turbo"
@@ -120,7 +120,7 @@ class SnapshotUI::WebTest < Minitest::Spec
     _(last_response.status).must_equal 200
     _(last_response.headers["content-type"]).must_equal "text/plain; charset=utf-8"
     _(last_response.headers["cache-control"]).must_equal "no-cache"
-    _(last_response.body).must_match(/\A\d+\.\d{9}\z/)
+    _(last_response.body).must_match(/\A\d+\.\d{9}-\d+\z/)
     _(last_response.headers["etag"]).must_equal %("#{last_response.body}")
   end
 

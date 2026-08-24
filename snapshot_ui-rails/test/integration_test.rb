@@ -69,7 +69,7 @@ class SnapshotUIRailsIntegrationTest < ActionDispatch::IntegrationTest
 
     get "/rails/ui_snapshots/version"
     assert_response :success
-    assert_match(/\A\d+\.\d{9}\z/, response.body)
+    assert_match(/\A\d+\.\d{9}-\d+\z/, response.body)
   end
 
   test "an unknown snapshot renders the not-found page with a 404" do

@@ -30,7 +30,7 @@ class SnapshotUI::Snapshot::StorageTest < Minitest::Spec
     storage.write("test/new_test_1_0", "{}")
     storage.publish_snapshots_in_progress
 
-    _(storage.version).must_match(/\A\d+\.\d{9}\z/)
+    _(storage.version).must_match(/\A\d+\.\d{9}-\d+\z/)
     _(storage.version).wont_equal version_before
   end
 

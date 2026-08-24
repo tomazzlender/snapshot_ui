@@ -23,13 +23,14 @@ module SnapshotUI
         # A token that changes whenever the published snapshots change.
         #
         # Publishing swaps in a freshly created directory (see
-        # .publish_snapshots_in_progress), so the modification time of the
-        # snapshots directory identifies the published set.
+        # .publish_snapshots_in_progress), so its inode identifies the published
+        # set even when the filesystem gives consecutive directories the same
+        # modification time.
         def version
           return "0" unless snapshots_directory.exist?
 
-          mtime = snapshots_directory.mtime
-          format("%d.%09d", mtime.to_i, mtime.nsec)
+          stat = snapshots_directory.stat
+          format("%d.%09d-%d", stat.mtime.to_i, stat.mtime.nsec, stat.ino)
         end
 
         def write(key, value)
