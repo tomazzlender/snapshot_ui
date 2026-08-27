@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require "snapshot_ui/version"
+
 module SnapshotUI
   module Rails
-    VERSION = "0.4.1"
+    VERSION = SnapshotUI::VERSION
   end
 end

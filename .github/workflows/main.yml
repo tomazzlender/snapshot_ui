@@ -40,3 +40,6 @@ jobs:
         bundler-cache: true
     - name: Run the default task
       run: bundle exec rake
+    - name: Verify packaged gems
+      if: matrix.ruby == '3.3' && matrix.gemfile == 'Gemfile'
+      run: bundle exec rake gems:verify

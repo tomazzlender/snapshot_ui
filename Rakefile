@@ -2,7 +2,10 @@
 
 require "bundler/gem_tasks"
 require "minitest/test_task"
+require "tmpdir"
 require_relative "lib/snapshot_ui"
+
+GEMSPEC_PATHS = %w[snapshot_ui.gemspec snapshot_ui-rails/snapshot_ui-rails.gemspec].freeze
 
 Minitest::TestTask.create(:test) do |t|
   t.test_globs = %w[test/snapshot_ui/**/*_test.rb]
@@ -37,6 +40,38 @@ namespace :rails do
       Rake::Task["rails_run"].invoke
     else
       puts "Skipping snapshot_ui-rails tests: Rails is not in this bundle (BUNDLE_GEMFILE=)."
+    end
+  end
+end
+
+namespace :gems do
+  desc "Build all gems into pkg"
+  task :build do
+    mkdir_p "pkg"
+
+    GEMSPEC_PATHS.each do |gemspec_path|
+      spec = Gem::Specification.load(gemspec_path)
+      output_path = File.expand_path("pkg/#{spec.full_name}.gem")
+
+      Dir.chdir(File.dirname(gemspec_path)) do
+        sh "gem", "build", File.basename(gemspec_path), "--strict", "--output", output_path
+      end
+    end
+  end
+
+  desc "Build, install, and load all packaged gems"
+  task verify: :build do
+    specs = GEMSPEC_PATHS.map { |path| Gem::Specification.load(path) }
+
+    Dir.mktmpdir("snapshot-ui-gems") do |gem_home|
+      specs.each do |spec|
+        sh "gem", "install", "pkg/#{spec.full_name}.gem", "--local", "--ignore-dependencies", "--no-document", "--install-dir", gem_home
+      end
+
+      load_paths = specs.map { |spec| File.join(gem_home, "gems", spec.full_name, "lib") }
+      Bundler.with_unbundled_env do
+        sh({"RUBYOPT" => load_paths.map { |path| "-I#{path}" }.join(" ")}, "ruby", "-e", 'require "snapshot_ui"; require "snapshot_ui/rails/version"; abort unless SnapshotUI::Rails::VERSION == SnapshotUI::VERSION')
+      end
     end
   end
 end
