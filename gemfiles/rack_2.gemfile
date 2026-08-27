@@ -5,7 +5,7 @@
 
 source "https://rubygems.org"
 
-gemspec path: ".."
+gemspec path: "../gems/snapshot_ui", name: "snapshot_ui"
 
 gem "rack", "~> 2.2"
 gem "rake"

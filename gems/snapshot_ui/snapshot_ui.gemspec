@@ -16,15 +16,14 @@ Gem::Specification.new do |spec|
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "#{spec.homepage}/tree/main"
-  spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "#{spec.homepage}/tree/main/gems/snapshot_ui"
+  spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/gems/snapshot_ui/CHANGELOG.md"
 
-  spec.files = (`git ls-files | grep -E '^(lib)'`.split("\n") + %w[snapshot_ui.gemspec README.md CHANGELOG.md LICENSE.txt])
+  gem_root = File.expand_path(__dir__)
+  spec.files = Dir.chdir(gem_root) do
+    Dir.glob(%w[lib/**/* snapshot_ui.gemspec README.md CHANGELOG.md LICENSE.txt]).select { |path| File.file?(path) }
+  end
   spec.require_paths = ["lib"]
 
-  # Uncomment to register a new dependency of your gem
   spec.add_dependency "rack", ">= 2.2", "< 4"
-
-  # For more information and examples about making a new gem, check out our
-  # guide at: https://bundler.io/guides/creating_gem.html
 end

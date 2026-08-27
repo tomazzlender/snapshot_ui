@@ -2,9 +2,8 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in snapshot_ui.gemspec
-gemspec path: "snapshot_ui-rails", name: "snapshot_ui-rails"
-gemspec
+gemspec path: "gems/snapshot_ui", name: "snapshot_ui"
+gemspec path: "gems/snapshot_ui-rails", name: "snapshot_ui-rails"
 
 gem "rake"
 gem "rack-test"

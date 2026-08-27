@@ -41,7 +41,7 @@ end
 This mounts the UI at `/rails/ui_snapshots` — alongside Rails' own development tools such as `/rails/info` and
 `/rails/mailers`. Every snapshot you take shows up there, grouped by the test that produced it:
 
-![The list of snapshots](doc/snapshots_index.png)
+![The list of snapshots](docs/images/snapshots_index.png)
 
 ### 2. Take snapshots in your integration tests
 
@@ -64,7 +64,7 @@ end
 Run the test with snapshots enabled and the response is captured and rendered exactly as it came back — here, a plot
 page from a community-garden site:
 
-![A page response rendered as a snapshot](doc/response_snapshot.png)
+![A page response rendered as a snapshot](docs/images/response_snapshot.png)
 
 `take_snapshot` accepts an object that responds to `#body` (such as the integration test's `response`) or a plain
 `String`, and two options:
@@ -95,12 +95,12 @@ end
 One call captures the whole email, and the snapshot renders with the same chrome as any Rails view — the subject,
 mailer/action and address headers, attachments, and the rendered email itself:
 
-![An Action Mailer email rendered as a snapshot](doc/mail_snapshot_html.png)
+![An Action Mailer email rendered as a snapshot](docs/images/mail_snapshot_html.png)
 
 Because the whole message is captured, **both the HTML and the plain-text versions are available** from the one call —
 a switcher appears whenever the email has both, so there is nothing to keep in sync:
 
-![The same email viewed as plain text](doc/mail_snapshot_text.png)
+![The same email viewed as plain text](docs/images/mail_snapshot_text.png)
 
 The snapshot also offers each attachment as a download and a **Download .eml** of the raw message, and the full header
 set is one click away under “All headers”.
@@ -170,7 +170,8 @@ The gem is a thin adapter over `snapshot_ui`. A Railtie:
 * requires the `mount_snapshot_ui` router helper, which mounts the same `SnapshotUI::Web` Rack app the core gem ships;
 * includes `SnapshotUI::Test::MinitestHelpers` into `ActionDispatch::IntegrationTest` via `ActiveSupport.on_load`.
 
-For anything not specific to Rails, see the [Snapshot UI README](https://github.com/tomazzlender/snapshot_ui).
+For anything not specific to Rails, see the
+[Snapshot UI README](https://github.com/tomazzlender/snapshot_ui/tree/main/gems/snapshot_ui).
 
 ## License
 

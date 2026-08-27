@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../lib/snapshot_ui/version"
+require_relative "../snapshot_ui/lib/snapshot_ui/version"
 
 Gem::Specification.new do |spec|
   spec.name = "snapshot_ui-rails"
@@ -15,13 +15,12 @@ Gem::Specification.new do |spec|
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "#{spec.homepage}/tree/main/snapshot_ui-rails"
-  spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/snapshot_ui-rails/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "#{spec.homepage}/tree/main/gems/snapshot_ui-rails"
+  spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/gems/snapshot_ui-rails/CHANGELOG.md"
 
   gem_root = File.expand_path(__dir__)
   spec.files = Dir.chdir(gem_root) do
-    (`git ls-files -z lib`.split("\x0") + %w[snapshot_ui-rails.gemspec README.md CHANGELOG.md])
-      .select { |path| File.exist?(File.join(gem_root, path)) }
+    Dir.glob(%w[lib/**/* snapshot_ui-rails.gemspec README.md CHANGELOG.md LICENSE.txt]).select { |path| File.file?(path) }
   end
   spec.require_paths = ["lib"]
 

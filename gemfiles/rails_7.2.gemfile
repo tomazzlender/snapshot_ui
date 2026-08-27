@@ -5,8 +5,8 @@
 
 source "https://rubygems.org"
 
-gemspec path: "..", name: "snapshot_ui"
-gemspec path: "../snapshot_ui-rails", name: "snapshot_ui-rails"
+gemspec path: "../gems/snapshot_ui", name: "snapshot_ui"
+gemspec path: "../gems/snapshot_ui-rails", name: "snapshot_ui-rails"
 
 gem "rails", "~> 7.2.0"
 gem "rake"

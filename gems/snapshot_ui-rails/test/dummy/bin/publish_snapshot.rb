@@ -3,7 +3,7 @@
 # Publishes one snapshot into the dummy app's storage and prints the new
 # version token. Used by the end-to-end browser check.
 #
-#   ruby test/rails_dummy/bin/publish_snapshot.rb SLUG BODY
+#   ruby gems/snapshot_ui-rails/test/dummy/bin/publish_snapshot.rb SLUG BODY
 
 ENV["TAKE_SNAPSHOTS"] = "1"
 ENV["RAILS_ENV"] = "test"

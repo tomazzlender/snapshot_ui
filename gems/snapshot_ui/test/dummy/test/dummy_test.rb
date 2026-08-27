@@ -11,7 +11,7 @@ class DummyTest < Minitest::Test
 
   def app
     # Rack 2's Rack::Builder.parse_file returns [app, options], Rack 3's just the app.
-    @app ||= Array(Rack::Builder.parse_file("test/dummy/config.ru")).first
+    @app ||= Array(Rack::Builder.parse_file(File.expand_path("../config.ru", __dir__))).first
   end
 
   class FirstNestedGroup < DummyTest

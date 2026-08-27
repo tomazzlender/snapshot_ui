@@ -6,6 +6,6 @@
 /pkg/
 /spec/reports/
 /tmp/
-/test/dummy/tmp/
-/test/rails_dummy/tmp/
-/test/rails_dummy/log/
+/gems/snapshot_ui/test/dummy/tmp/
+/gems/snapshot_ui-rails/test/dummy/tmp/
+/gems/snapshot_ui-rails/test/dummy/log/

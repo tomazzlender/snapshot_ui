@@ -4,7 +4,7 @@
 ENV["TAKE_SNAPSHOTS"] ||= "1"
 ENV["RAILS_ENV"] = "test"
 
-require_relative "../../test/rails_dummy/config/environment"
+require_relative "dummy/config/environment"
 
 require "rails/test_help"
 require "minitest/autorun"

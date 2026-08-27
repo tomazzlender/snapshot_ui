@@ -5,7 +5,7 @@ require "rack/test"
 require "rack/builder"
 require "snapshot_ui/web"
 require "json"
-require_relative "../../test/helpers/fixture_helper"
+require_relative "../helpers/fixture_helper"
 
 class SnapshotUI::WebTest < Minitest::Spec
   include Rack::Test::Methods
@@ -13,7 +13,7 @@ class SnapshotUI::WebTest < Minitest::Spec
 
   def app
     # Rack 2's Rack::Builder.parse_file returns [app, options], Rack 3's just the app.
-    @app ||= Array(Rack::Builder.parse_file("test/dummy/config.ru")).first
+    @app ||= Array(Rack::Builder.parse_file(File.expand_path("../dummy/config.ru", __dir__))).first
   end
 
   it "renders an empty list of snapshots" do

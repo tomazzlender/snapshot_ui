@@ -2,7 +2,7 @@
 
 # A dummy Rack application that demonstrates how to use SnapshotUI.
 #
-# Run with `bundle exec puma test/dummy/config.ru -p 3001`
+# Run with `bundle exec puma gems/snapshot_ui/test/dummy/config.ru -p 3001`
 # Then open http://localhost:3001/ui/snapshots
 
 require "snapshot_ui/web"
