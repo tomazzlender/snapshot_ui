@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="View emails and integration-test responses produced by Rails tests in your browser.">
+  <title>Snapshot UI — view what your Rails tests produced</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#main" aria-label="Snapshot UI home">
+        <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+          <rect class="mark-back" x="5" y="5" width="30" height="30" rx="3"></rect>
+          <rect class="mark-front" x="13" y="13" width="30" height="30" rx="3"></rect>
+          <path d="M13 21h30"></path>
+          <circle cx="18" cy="17" r="1.3"></circle>
+          <circle cx="22" cy="17" r="1.3"></circle>
+        </svg>
+        <span>Snapshot UI</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#mailers">Mailer tests</a>
+        <a href="#responses">Integration tests</a>
+        <a href="https://github.com/tomazzlender/snapshot_ui/tree/main/gems/snapshot_ui-rails">Documentation</a>
+        <a href="https://github.com/tomazzlender/snapshot_ui">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-inner">
+        <svg class="hero-mark" viewBox="0 0 48 48" aria-hidden="true">
+          <rect class="mark-back" x="5" y="5" width="30" height="30" rx="3"></rect>
+          <rect class="mark-front" x="13" y="13" width="30" height="30" rx="3"></rect>
+          <path d="M13 21h30"></path>
+          <circle cx="18" cy="17" r="1.3"></circle>
+          <circle cx="22" cy="17" r="1.3"></circle>
+        </svg>
+        <h1>Snapshot UI</h1>
+        <p class="hero-statement">View what your Rails tests produced.</p>
+        <p class="hero-description">Open emails and integration-test responses in your browser while writing and debugging tests.</p>
+
+        <div class="install" role="group" aria-label="Gemfile installation">
+          <span>Gemfile</span>
+          <code>gem <b>"snapshot_ui-rails"</b></code>
+        </div>
+
+        <p class="project-meta">Rails 7.1+ <i></i> Ruby 3.3+ <i></i> MIT License</p>
+      </div>
+    </section>
+
+    <section class="use-case mailers" id="mailers">
+      <div class="shell">
+        <header class="section-heading">
+          <p class="section-label">Mailer tests</p>
+          <h2>The test email is the preview.</h2>
+          <p>Pass the email created by a mailer test to <code>take_snapshot</code>. Snapshot UI displays that exact message instead of requiring a separate Action Mailer preview.</p>
+        </header>
+
+        <div class="example-grid">
+          <div class="code-panel">
+            <div class="code-label">test/mailers/notifier_mailer_test.rb</div>
+            <pre><code><span class="keyword">class</span> <span class="constant">NotifierMailerTest</span> &lt; <span class="constant">ActionMailer</span>::<span class="constant">TestCase</span>
+  test <span class="string">"welcome email"</span> <span class="keyword">do</span>
+    email = <span class="constant">NotifierMailer</span>.welcome(user)
+
+    <span class="focus-line">take_snapshot(email)</span>
+
+    assert_equal [user.email], email.to
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+          </div>
+          <figure class="product-output">
+            <img src="../gems/snapshot_ui-rails/docs/images/mail_snapshot_html.png" alt="An HTML email created by a mailer test and displayed by Snapshot UI">
+            <figcaption>HTML, plain text, address headers, attachments, and the original <code>.eml</code> are available from the same snapshot.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="use-case responses" id="responses">
+      <div class="shell">
+        <header class="section-heading">
+          <p class="section-label">Integration tests</p>
+          <h2>Render the response you already have.</h2>
+          <p>Pass an integration-test response to <code>take_snapshot</code> and inspect its body in the browser. There is no need to print the HTML or recreate the test state by hand.</p>
+        </header>
+
+        <div class="example-grid">
+          <div class="code-panel">
+            <div class="code-label">test/integration/plots_test.rb</div>
+            <pre><code><span class="keyword">class</span> <span class="constant">PlotsTest</span> &lt; <span class="constant">ActionDispatch</span>::<span class="constant">IntegrationTest</span>
+  test <span class="string">"shows a plot"</span> <span class="keyword">do</span>
+    get <span class="string">"/plots/A3"</span>
+
+    <span class="focus-line">take_snapshot(response)</span>
+
+    assert_response <span class="symbol">:success</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+          </div>
+          <figure class="product-output">
+            <img src="../gems/snapshot_ui-rails/docs/images/response_snapshot.png" alt="An integration-test response displayed by Snapshot UI">
+            <figcaption>Inspect the response before deciding which assertions matter, or use the rendered page to investigate unexpected output.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="run-snapshots" id="usage">
+      <div class="shell run-grid">
+        <div class="run-copy">
+          <p class="section-label">Run and review</p>
+          <h2>Snapshots are opt-in.</h2>
+          <p>Normal test runs do not write snapshots. Add the flag when you want to inspect them:</p>
+          <pre tabindex="0"><code>bin/rails test test/integration --take-snapshots</code></pre>
+          <p>Mount the interface in development and open <code>/rails/ui_snapshots</code>. The index refreshes as tests publish snapshots.</p>
+          <a class="text-link" href="https://github.com/tomazzlender/snapshot_ui/tree/main/gems/snapshot_ui-rails">Read the Rails setup guide →</a>
+        </div>
+        <figure class="snapshot-index">
+          <img src="../gems/snapshot_ui-rails/docs/images/snapshots_index.png" alt="Snapshot UI index listing snapshots by test">
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div class="footer-project">
+        <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+          <rect class="mark-back" x="5" y="5" width="30" height="30" rx="3"></rect>
+          <rect class="mark-front" x="13" y="13" width="30" height="30" rx="3"></rect>
+          <path d="M13 21h30"></path>
+          <circle cx="18" cy="17" r="1.3"></circle>
+          <circle cx="22" cy="17" r="1.3"></circle>
+        </svg>
+        <div><strong>Snapshot UI</strong><span>Ruby gems for test-generated previews.</span></div>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/tomazzlender/snapshot_ui/tree/main/gems/snapshot_ui-rails">Rails gem</a>
+        <a href="https://github.com/tomazzlender/snapshot_ui/tree/main/gems/snapshot_ui">Core gem</a>
+        <a href="https://github.com/tomazzlender/snapshot_ui">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
