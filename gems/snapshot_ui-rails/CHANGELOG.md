@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-26
+
 - Initial release. Rails integration for Snapshot UI:
   - Snapshot UI is configured automatically from the Rails application (root, tmp directory, mount path and host);
     with the defaults no initializer is required.

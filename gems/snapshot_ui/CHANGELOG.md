@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-26
+
 - Snapshots now carry a type. "response" (the default) is unchanged; other gems can register additional types
   and renderers (snapshot_ui-rails adds "mail"). Snapshots written before this are read as responses.
 
