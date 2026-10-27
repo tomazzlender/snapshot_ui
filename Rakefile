@@ -82,8 +82,14 @@ namespace :gems do
       end
 
       load_paths = specs.map { |spec| File.join(gem_home, "gems", spec.full_name, "lib") }
+      rails_version = Bundler.load.specs.find { |spec| spec.name == "rails" }.version
+      # The packaged gems load outside the bundle, so Rails and its dependencies
+      # must come from the gem path the bundle was installed into (for example
+      # vendor/bundle in CI), not only from the system gems.
+      gem_path = Gem.path.join(File::PATH_SEPARATOR)
       Bundler.with_unbundled_env do
-        sh({"RUBYOPT" => load_paths.map { |path| "-I#{path}" }.join(" ")}, "ruby", "-e", 'require "rails"; require "snapshot_ui/web"; require "snapshot_ui-rails"; abort unless SnapshotUI::Rails::VERSION == SnapshotUI::VERSION')
+        sh({"RUBYOPT" => load_paths.map { |path| "-I#{path}" }.join(" "), "GEM_PATH" => gem_path}, "ruby", "-e", "gem \"rails\", \"#{rails_version}\"; " \
+          'require "rails"; require "snapshot_ui/web"; require "snapshot_ui-rails"; abort unless SnapshotUI::Rails::VERSION == SnapshotUI::VERSION')
       end
     end
   end
